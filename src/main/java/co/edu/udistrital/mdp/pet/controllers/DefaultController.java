@@ -1,4 +1,4 @@
-package co.edu.udistrital.mdp.pets.controllers;
+package co.edu.udistrital.mdp.pet.controllers;
 
 import java.util.HashMap;
 import java.util.Map;

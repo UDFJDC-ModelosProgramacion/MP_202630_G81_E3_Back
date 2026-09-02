@@ -1,4 +1,4 @@
-package co.edu.udistrital.mdp.pets.exceptions;
+package co.edu.udistrital.mdp.pet.exceptions;
 
 import java.time.LocalDateTime;
 
