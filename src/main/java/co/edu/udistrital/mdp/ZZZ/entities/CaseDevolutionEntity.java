@@ -2,8 +2,8 @@ package co.edu.udistrital.mdp.ZZZ.entities;
 
 import java.util.Date;
 
-import javax.persistence.Entity;
-import javax.persistence.OneToOne;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 

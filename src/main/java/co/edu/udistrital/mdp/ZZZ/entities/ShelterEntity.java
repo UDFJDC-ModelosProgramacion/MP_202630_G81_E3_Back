@@ -3,9 +3,9 @@ package co.edu.udistrital.mdp.ZZZ.entities;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import ja.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
