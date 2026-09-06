@@ -1,5 +1,5 @@
 package co.edu.udistrital.mdp.pets.entities;
 
-public class VaccinationRegistrationEntity {
+public class VaccinationRegistrationEntity extends BaseEntity {
 
 }
