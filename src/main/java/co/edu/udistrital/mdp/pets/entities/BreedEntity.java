@@ -1,22 +1,20 @@
 package co.edu.udistrital.mdp.pets.entities;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import lombok.Data;
 import uk.co.jemos.podam.common.PodamExclude;
 
-@Data 
-@Entity 
+@Data
+@Entity
 public class BreedEntity extends BaseEntity {
 
-@Id 
-private Long id;
-private String description;
-private String name;
+    private String description;
+    private String name;
 
-
-@PodamExclude 
-@OneToOne 
-private PetEntity pet;
+    @PodamExclude
+    @OneToOne
+    @JoinColumn(name = "pet_id", referencedColumnName = "id", unique = true)
+    private PetEntity pet;
 }
