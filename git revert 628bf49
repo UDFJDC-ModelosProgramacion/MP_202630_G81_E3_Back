@@ -1,0 +1,21 @@
+[33m628bf49[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mfeature/EstebanAvila[m[33m, [m[1;31morigin/feature/EstebanAvila[m[33m)[m a
+[33m6441478[m Create attributes, annotations, and associations for BreadEntity and VaccinationRegistrationEntity The cardinality between Pet and Breed is OneToOne, since a pet only has one breeding, and the cardinality between VaccinationRegistrationEntity and PetEntity is ManyToOne, since a pet can have multiple vaccination records
+[33ma0aea03[m Create entity classes and add attributes and annotations to PetEntity The associations between the PetEntity class and BreedEntity are of type OneToOne because a pet only has one breeding, and between PetEntity and VaccinationRegistration they are of type ManyToMany because a pet can have many vaccination records
+[33m9ed8b15[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m, [m[1;32magents/fix-compilation-errors[m[33m)[m Update Jenkinsfile
+[33m6833c13[m Add files
+[33m9a38765[m Add files
+[33m3798f57[m Add files
+[33md415b97[m Update Jenkinsfile
+[33m55d3f34[m Update README.md
+[33md0e5759[m Update Jenkinsfile
+[33m4b5a308[m Update README.md
+[33mc5cbeda[m Add initial files
+[33mb0b91a0[m Update pom.xml
+[33m340a8bc[m Update .gitignore
+[33m61eb1fd[m Create README.md
+[33m38629b7[m Update pom.xml
+[33m81c0706[m Update Jenkinsfile
+[33me1ce289[m Update Jenkinsfile
+[33m9943e8b[m Update Jenkinsfile
+[33m52a472d[m Update pom.xml
+[33mccf047b[m Actualización CascaraBack
