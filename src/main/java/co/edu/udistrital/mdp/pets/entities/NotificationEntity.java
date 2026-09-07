@@ -1,24 +1,25 @@
 package co.edu.udistrital.mdp.pets.entities;
 
+import java.util.Date;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 
 import lombok.Data;
 import uk.co.jemos.podam.common.PodamExclude;
 
 @Data
 @Entity
-public class VeterinarianEntity extends BaseEntity {
+public class NotificationEntity extends BaseEntity {
 
-    private String name;
-    private String speciality;
+    private String content;
+
+    @Temporal(TemporalType.DATE)
+    private Date date;
 
     @PodamExclude
-    @JsonIgnore
     @ManyToOne
     private ShelterEntity shelter;
 }
-
-
