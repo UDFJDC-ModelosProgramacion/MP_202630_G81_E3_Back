@@ -18,6 +18,6 @@ public class AdopterEntity extends BaseEntity {
     private String phone;
 
     @PodamExclude
-    @OneToMany(mappedBy = "adopter", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "adopter", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AdoptionEntity> adoptions = new ArrayList<>();
 }
