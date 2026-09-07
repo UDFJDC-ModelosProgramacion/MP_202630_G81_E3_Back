@@ -1,7 +1,9 @@
 package co.edu.udistrital.mdp.pets.entities;
 
+import java.util.Date;
+
 import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -10,15 +12,13 @@ import uk.co.jemos.podam.common.PodamExclude;
 
 @Data
 @Entity
-public class VeterinarianEntity extends BaseEntity {
+public class CoexistenceTestEntity extends BaseEntity {
 
-    private String name;
-    private String speciality;
+    private Date startDate;
+    private String result;
 
     @PodamExclude
     @JsonIgnore
-    @ManyToOne
-    private ShelterEntity shelter;
+    @OneToOne(mappedBy = "coexistenceTest")
+    private AdoptionEntity adoption;
 }
-
-
