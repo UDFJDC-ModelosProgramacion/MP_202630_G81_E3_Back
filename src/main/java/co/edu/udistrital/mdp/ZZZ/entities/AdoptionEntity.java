@@ -33,7 +33,7 @@ public class AdoptionEntity extends BaseEntity {
     @JoinColumn(name = "contract_id", referencedColumnName = "id")
     private AdoptionContractEntity contract;
 
-    // Atributos de patrones comportamentales marcados como @Transient
+
     @Transient
     private Object strategy;
 }
