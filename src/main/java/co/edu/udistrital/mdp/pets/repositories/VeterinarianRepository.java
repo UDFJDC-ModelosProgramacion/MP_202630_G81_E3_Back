@@ -1,9 +1,10 @@
 package co.edu.udistrital.mdp.pets.repositories;
 
-import co.edu.udistrital.mdp.pets.entities.AdoptionEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import co.edu.udistrital.mdp.pets.entities.VeterinarianEntity;
+
 @Repository
-public interface AdoptionRepository extends JpaRepository<AdoptionEntity, Long> {
+public interface VeterinarianRepository extends JpaRepository<VeterinarianEntity, Long> {
 }

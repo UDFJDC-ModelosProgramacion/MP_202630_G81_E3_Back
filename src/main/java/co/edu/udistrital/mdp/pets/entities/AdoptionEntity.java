@@ -40,6 +40,11 @@ public class AdoptionEntity extends BaseEntity {
     @JoinColumn(name = "contract_id", referencedColumnName = "id")
     private AdoptionContractEntity contract;
 
+    @PodamExclude
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "coexistence_test_id", referencedColumnName = "id")
+    private CoexistenceTestEntity coexistenceTest;
+
     @Transient
     private Object strategy;
 }
