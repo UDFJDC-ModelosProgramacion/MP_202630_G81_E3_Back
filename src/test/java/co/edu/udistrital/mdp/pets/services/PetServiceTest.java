@@ -51,9 +51,11 @@ class PetServiceTest {
     }
 
     private void clearData() {
-        entityManager.getEntityManager().createQuery("delete from PetEventEntity");
-        entityManager.getEntityManager().createQuery("delete from PetEntity");
-        entityManager.getEntityManager().createQuery("delete from ShelterEntity");
+        entityManager.getEntityManager().createQuery("delete from PetEventEntity").executeUpdate();
+        entityManager.getEntityManager().createQuery("delete from PetEntity").executeUpdate();
+        entityManager.getEntityManager().createQuery("delete from ShelterEntity").executeUpdate();
+        petList.clear();
+        shelterList.clear();
     }
 
     private void insertData() {
@@ -200,7 +202,6 @@ class PetServiceTest {
         PetEntity entity = petList.get(0);
         entity.setStatus("AVAILABLE");
         entity.setActivityLevel("HIGH");
-        entityManager.persist(entity);
 
         List<PetEntity> result = petService.getAvailablePetsByFilters("HIGH", null);
         assertTrue(result.stream().anyMatch(p -> p.getId().equals(entity.getId())));
@@ -211,7 +212,6 @@ class PetServiceTest {
         PetEntity entity = petList.get(0);
         entity.setStatus("AVAILABLE");
         entity.setActivityLevel("LOW");
-        entityManager.persist(entity);
 
         List<PetEntity> result = petService.getAvailablePetsByFilters("HIGH", null);
         assertTrue(result.stream().noneMatch(p -> p.getId().equals(entity.getId())));
