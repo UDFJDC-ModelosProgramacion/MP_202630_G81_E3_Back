@@ -51,7 +51,7 @@ public class PetEntity extends BaseEntity {
 
     @PodamExclude
     @OneToMany(mappedBy = "pet", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<VaccinationRegistrationEntity> vaccinationRegistrations = new ArrayList<>();
+    private List<PetEventEntity> events = new ArrayList<>();
 
     @PodamExclude
     @OneToOne(mappedBy = "pet", cascade = CascadeType.ALL, orphanRemoval = true)

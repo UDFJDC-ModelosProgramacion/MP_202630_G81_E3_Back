@@ -14,19 +14,11 @@ import uk.co.jemos.podam.common.PodamExclude;
 @Entity
 public class PetEventEntity extends BaseEntity {
 
-    /**
-     * Tipo de evento. Valores esperados: "VACCINATION", "ACCIDENT",
-     * "ILLNESS", "SURGERY", "ARRIVAL", "OTHER".
-     */
     private String eventType;
 
     @Temporal(TemporalType.DATE)
     private Date date;
 
-    /**
-     * Detalle del evento: nombre de la vacuna, qué cirugía fue, cómo ocurrió
-     * el accidente, cómo llegó la mascota al refugio, etc.
-     */
     private String description;
 
     @PodamExclude
