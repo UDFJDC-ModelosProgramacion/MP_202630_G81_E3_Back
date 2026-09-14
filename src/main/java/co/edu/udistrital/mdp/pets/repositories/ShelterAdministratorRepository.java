@@ -5,5 +5,7 @@ import co.edu.udistrital.mdp.pets.entities.ShelterAdministratorEntity;
  
 @Repository
 public interface ShelterAdministratorRepository extends JpaRepository<ShelterAdministratorEntity, Long> {
+    boolean existsByEmail(String email);
+    boolean existsByEmailAndIdNot(String email, Long id);
 }
  

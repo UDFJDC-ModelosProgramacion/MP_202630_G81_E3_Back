@@ -1,6 +1,8 @@
 package co.edu.udistrital.mdp.pets.entities;
+import java.util.ArrayList;
+import java.util.List;
 import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.ManyToMany;
 import lombok.Data;
 import uk.co.jemos.podam.common.PodamExclude;
 
@@ -13,7 +15,7 @@ public class ShelterAdministratorEntity extends BaseEntity {
     private String role;
  
     @PodamExclude
-    @ManyToOne
-    private ShelterEntity shelter;
+    @ManyToMany(mappedBy = "administrators")
+    private List<ShelterEntity> shelters = new ArrayList<>();
 }
  

@@ -3,6 +3,9 @@ import java.util.ArrayList;
 import java.util.List;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import lombok.Data;
 import uk.co.jemos.podam.common.PodamExclude;
@@ -28,6 +31,11 @@ public class ShelterEntity extends BaseEntity {
 
     
     @PodamExclude
-    @OneToMany(mappedBy = "shelter", cascade = CascadeType.ALL)
+    @ManyToMany
+    @JoinTable(
+        name = "shelter_administrators",
+        joinColumns = @JoinColumn(name = "shelter_id"),
+        inverseJoinColumns = @JoinColumn(name = "administrator_id")
+    )
     private List<ShelterAdministratorEntity> administrators = new ArrayList<>();
 }
