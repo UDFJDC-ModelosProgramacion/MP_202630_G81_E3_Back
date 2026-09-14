@@ -5,6 +5,8 @@ import org.springframework.stereotype.Repository;
 
 import co.edu.udistrital.mdp.pets.entities.AdopterEntity;
 
+
 @Repository
 public interface AdopterRepository extends JpaRepository<AdopterEntity, Long> {
+      
 }

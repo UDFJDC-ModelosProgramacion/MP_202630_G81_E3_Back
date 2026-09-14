@@ -12,12 +12,14 @@ import uk.co.jemos.podam.common.PodamExclude;
 
 @Data
 @Entity
-public class VaccinationRegistrationEntity extends BaseEntity {
+public class PetEventEntity extends BaseEntity {
 
-    private String vaccineName;
+    private String eventType;
 
     @Temporal(TemporalType.DATE)
-    private Date vaccinationDate;
+    private Date date;
+
+    private String description;
 
     @PodamExclude
     @ManyToOne
