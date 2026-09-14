@@ -1,62 +1,85 @@
 package co.edu.udistrital.mdp.pets.services;
 
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import co.edu.udistrital.mdp.pets.entities.AdopterEntity;
 import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
 import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
 import co.edu.udistrital.mdp.pets.repositories.AdopterRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import lombok.extern.slf4j.Slf4j;
 
-import java.util.List;
-
+@Slf4j
 @Service
-@RequiredArgsConstructor
 public class AdopterService {
 
-    private final AdopterRepository adopterRepository;
+    @Autowired
+    private AdopterRepository adopterRepository;
 
     @Transactional
-    public AdopterEntity createAdopter(AdopterEntity adopter) throws IllegalOperationException {
-        if (adopter == null || adopter.getName() == null || adopter.getName().trim().isEmpty()) {
-            throw new IllegalOperationException("El nombre del adoptante es obligatorio.");
-        }
-        return adopterRepository.save(adopter);
+    public AdopterEntity createAdopter(AdopterEntity adopterEntity) throws IllegalOperationException {
+        log.info("Inicia proceso de creación de un adoptante");
+
+        if (adopterEntity.getName() == null || adopterEntity.getName().isBlank())
+            throw new IllegalOperationException("Name is not valid");
+
+        if (adopterEntity.getPhone() == null || adopterEntity.getPhone().isBlank())
+            throw new IllegalOperationException("Phone is not valid");
+
+        log.info("Termina proceso de creación de un adoptante");
+        return adopterRepository.save(adopterEntity);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public List<AdopterEntity> getAdopters() {
+        log.info("Inicia proceso de consultar todos los adoptantes");
         return adopterRepository.findAll();
     }
 
-    @Transactional(readOnly = true)
-    public AdopterEntity getAdopter(Long id) throws EntityNotFoundException {
-        return adopterRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("El adoptante con ID " + id + " no fue encontrado."));
+    @Transactional
+    public AdopterEntity getAdopter(Long adopterId) throws EntityNotFoundException {
+        log.info("Inicia proceso de consultar el adoptante con id = {0}", adopterId);
+        return findAdopterOrThrow(adopterId);
     }
 
     @Transactional
-    public AdopterEntity updateAdopter(Long id, AdopterEntity adopter) throws EntityNotFoundException, IllegalOperationException {
-        AdopterEntity existing = getAdopter(id);
+    public AdopterEntity updateAdopter(Long adopterId, AdopterEntity adopterEntity)
+            throws EntityNotFoundException, IllegalOperationException {
+        log.info("Inicia proceso de actualizar el adoptante con id = {0}", adopterId);
 
-        if (adopter.getName() == null || adopter.getName().trim().isEmpty()) {
-            throw new IllegalOperationException("El nombre del adoptante no puede estar vacío.");
-        }
+        if (adopterEntity.getName() == null || adopterEntity.getName().isBlank())
+            throw new IllegalOperationException("Name is not valid");
 
-        existing.setName(adopter.getName());
-        existing.setEmail(adopter.getEmail());
-        existing.setPhone(adopter.getPhone());
-        existing.setAddress(adopter.getAddress());
+        if (adopterEntity.getPhone() == null || adopterEntity.getPhone().isBlank())
+            throw new IllegalOperationException("Phone is not valid");
 
-        return adopterRepository.save(existing);
+        findAdopterOrThrow(adopterId);
+        adopterEntity.setId(adopterId);
+
+        log.info("Termina proceso de actualizar el adoptante con id = {0}", adopterId);
+        return adopterRepository.save(adopterEntity);
     }
 
     @Transactional
-    public void deleteAdopter(Long id) throws EntityNotFoundException, IllegalOperationException {
-        AdopterEntity existing = getAdopter(id);
-        if (existing.getAdoptions() != null && !existing.getAdoptions().isEmpty()) {
-            throw new IllegalOperationException("No se puede eliminar un adoptante que tiene adopciones registradas.");
-        }
-        adopterRepository.deleteById(id);
+    public void deleteAdopter(Long adopterId) throws EntityNotFoundException, IllegalOperationException {
+        log.info("Inicia proceso de borrar el adoptante con id = {0}", adopterId);
+
+        AdopterEntity adopter = findAdopterOrThrow(adopterId);
+
+        if (adopter.getAdoptions() != null && !adopter.getAdoptions().isEmpty())
+            throw new IllegalOperationException("Unable to delete adopter with existing adoptions");
+
+        adopterRepository.deleteById(adopterId);
+        log.info("Termina proceso de borrar el adoptante con id = {0}", adopterId);
+    }
+
+    private AdopterEntity findAdopterOrThrow(Long adopterId) throws EntityNotFoundException {
+        Optional<AdopterEntity> adopterEntity = adopterRepository.findById(adopterId);
+        if (adopterEntity.isEmpty())
+            throw new EntityNotFoundException("Adopter not found");
+        return adopterEntity.get();
     }
 }
