@@ -2,7 +2,6 @@ package co.edu.udistrital.mdp.pets.services;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import co.edu.udistrital.mdp.pets.entities.ShelterAdministratorEntity;
@@ -17,11 +16,13 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class ShelterAdministratorService {
 
-    @Autowired
     private ShelterAdministratorRepository administratorRepository;
-
-    @Autowired
     private ShelterRepository shelterRepository;
+    public ShelterAdministratorService(ShelterAdministratorRepository administratorRepository,
+            ShelterRepository shelterRepository) {
+        this.administratorRepository = administratorRepository;
+        this.shelterRepository = shelterRepository;
+    }
 
     @Transactional
     public ShelterAdministratorEntity createAdministrator(ShelterAdministratorEntity administratorEntity)
