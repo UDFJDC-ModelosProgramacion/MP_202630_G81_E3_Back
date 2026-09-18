@@ -1,6 +1,5 @@
 package co.edu.udistrital.mdp.pets.services;
 import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import co.edu.udistrital.mdp.pets.entities.AdoptionEntity;
@@ -15,11 +14,14 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class CaseDevolutionService {
 
-    @Autowired
     private CaseDevolutionRepository caseDevolutionRepository;
-
-    @Autowired
     private AdoptionRepository adoptionRepository;
+
+    public CaseDevolutionService(CaseDevolutionRepository caseDevolutionRepository,
+             AdoptionRepository adoptionRepository) {
+        this.caseDevolutionRepository = caseDevolutionRepository;
+        this.adoptionRepository = adoptionRepository;
+    }
 
     @Transactional
     public CaseDevolutionEntity createCaseDevolution(Long adoptionId, CaseDevolutionEntity caseDevolutionEntity)
@@ -37,7 +39,7 @@ public class CaseDevolutionService {
         if (caseDevolutionRepository.findByAdoptionId(adoptionId).isPresent())
             throw new IllegalOperationException("La adopción ya tiene una devolución registrada");
 
-        if (adoption.getDate() != null && caseDevolutionEntity.getDate().isBefore(adoption.getDate()))
+        if (adoption.getAdoptionDate() != null && caseDevolutionEntity.getDate().isBefore(adoption.getAdoptionDate()))
             throw new IllegalOperationException("La fecha de la devolución no puede ser anterior a la fecha de la adopción");
 
         caseDevolutionEntity.setAdoption(adoption);
