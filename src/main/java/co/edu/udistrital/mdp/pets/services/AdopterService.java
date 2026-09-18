@@ -3,7 +3,6 @@ package co.edu.udistrital.mdp.pets.services;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import co.edu.udistrital.mdp.pets.entities.AdopterEntity;
@@ -16,8 +15,10 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class AdopterService {
 
-    @Autowired
     private AdopterRepository adopterRepository;
+    public AdopterService(AdopterRepository adopterRepository) {
+        this.adopterRepository = adopterRepository;
+    }
 
     @Transactional
     public AdopterEntity createAdopter(AdopterEntity adopterEntity) throws IllegalOperationException {

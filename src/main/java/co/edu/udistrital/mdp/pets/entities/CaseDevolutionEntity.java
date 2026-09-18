@@ -6,9 +6,11 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import uk.co.jemos.podam.common.PodamExclude;
 
 @Data
+@EqualsAndHashCode(callSuper = false)
 @Entity
 public class CaseDevolutionEntity extends BaseEntity {
     @Temporal(TemporalType.DATE)

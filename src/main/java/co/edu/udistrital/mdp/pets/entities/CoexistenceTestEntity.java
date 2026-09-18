@@ -8,9 +8,11 @@ import jakarta.persistence.OneToOne;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import uk.co.jemos.podam.common.PodamExclude;
 
 @Data
+@EqualsAndHashCode(callSuper = false)
 @Entity
 public class CoexistenceTestEntity extends BaseEntity {
 

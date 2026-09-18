@@ -264,7 +264,7 @@ class PetServiceTest {
             entityManager.persist(adopterEntity);
 
             AdoptionEntity adoptionEntity = new AdoptionEntity();
-            adoptionEntity.setDate(LocalDate.now());
+            adoptionEntity.setAdoptionDate(LocalDate.now());
             adoptionEntity.setStatus("IN_PROGRESS");
             adoptionEntity.setPet(entity);
             adoptionEntity.setAdopter(adopterEntity);
@@ -304,7 +304,7 @@ class PetServiceTest {
             entityManager.persist(adopterEntity);
 
             AdoptionEntity adoptionEntity = new AdoptionEntity();
-            adoptionEntity.setDate(LocalDate.now());
+            adoptionEntity.setAdoptionDate(LocalDate.now());
             adoptionEntity.setStatus("COMPLETED");
             adoptionEntity.setPet(entity);
             adoptionEntity.setAdopter(adopterEntity);
