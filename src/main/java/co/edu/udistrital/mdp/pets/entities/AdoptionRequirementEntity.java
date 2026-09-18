@@ -15,6 +15,8 @@ public class AdoptionRequirementEntity extends BaseEntity {
     private Boolean allowsOtherPets;
     private Boolean requireYard;
     private Integer minAdopterAge;
+    private String description;
+    private Boolean mandatory;
 
     @PodamExclude
     @ManyToOne(fetch = FetchType.LAZY)

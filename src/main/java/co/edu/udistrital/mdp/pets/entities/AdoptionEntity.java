@@ -21,7 +21,7 @@ import uk.co.jemos.podam.common.PodamExclude;
 @Table(name = "adoptions")
 public class AdoptionEntity extends BaseEntity {
 
-    private LocalDate date;
+    private LocalDate adoptionDate;
 
     private String status;
 

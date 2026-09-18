@@ -4,7 +4,6 @@ import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,11 +23,13 @@ public class PetEventService {
     public static final String ARRIVAL_EVENT_TYPE = "ARRIVAL";
     public static final String VACCINATION_EVENT_TYPE = "VACCINATION";
 
-    @Autowired
     private PetEventRepository petEventRepository;
-
-    @Autowired
     private PetRepository petRepository;
+
+    public PetEventService(PetEventRepository petEventRepository, PetRepository petRepository) {
+        this.petEventRepository = petEventRepository;
+        this.petRepository = petRepository;
+    }
 
     /**
      * Method to create a new event for a pet. It validates the input and checks if the pet exists before saving the event.

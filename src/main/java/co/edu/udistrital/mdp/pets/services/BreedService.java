@@ -2,7 +2,6 @@ package co.edu.udistrital.mdp.pets.services;
 
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,11 +18,13 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class BreedService {
 
-    @Autowired
     private BreedRepository breedRepository;
-
-    @Autowired
     private PetRepository petRepository;
+
+    public BreedService(BreedRepository breedRepository, PetRepository petRepository) {
+        this.breedRepository = breedRepository;
+        this.petRepository = petRepository;
+    }
 
     @Transactional
     public BreedEntity createBreed(Long petId, BreedEntity breedEntity)

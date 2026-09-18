@@ -3,7 +3,7 @@ package co.edu.udistrital.mdp.pets.services;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,14 +28,15 @@ public class PetService {
 
     public static final List<String> ACTIVE_ADOPTION_STATUSES = List.of("IN_PROGRESS", "COHABITATION");
 
-    @Autowired
     private PetRepository petRepository;
-
-    @Autowired
     private ShelterRepository shelterRepository;
-
-    @Autowired
     private AdoptionRepository adoptionRepository;
+
+    public PetService(PetRepository petRepository, ShelterRepository shelterRepository, AdoptionRepository adoptionRepository) {
+        this.petRepository = petRepository;
+        this.shelterRepository = shelterRepository;
+        this.adoptionRepository = adoptionRepository;
+    }
 
 
     @Transactional
