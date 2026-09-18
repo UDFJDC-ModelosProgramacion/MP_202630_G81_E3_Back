@@ -11,9 +11,11 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import uk.co.jemos.podam.common.PodamExclude;
 
-@Data
+@Data 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 public class PetEntity extends BaseEntity {
 

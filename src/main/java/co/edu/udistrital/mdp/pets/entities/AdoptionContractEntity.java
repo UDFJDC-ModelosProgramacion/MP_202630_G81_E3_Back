@@ -18,7 +18,7 @@ import uk.co.jemos.podam.common.PodamExclude;
 @Table(name = "adoption_contracts")
 public class AdoptionContractEntity extends BaseEntity {
 
-    private LocalDate signatureDate;
+    private LocalDate signedDate;
 
     @Lob
     private String termsAndConditions;
@@ -28,4 +28,5 @@ public class AdoptionContractEntity extends BaseEntity {
     @PodamExclude
     @OneToOne(mappedBy = "contract", fetch = FetchType.LAZY)
     private AdoptionEntity adoption;
+
 }

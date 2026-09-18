@@ -8,9 +8,11 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import uk.co.jemos.podam.common.PodamExclude;
 
 @Data
+@EqualsAndHashCode(callSuper = false)
 @Entity
 public class ShelterEntity extends BaseEntity {
 

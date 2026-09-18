@@ -3,7 +3,6 @@ package co.edu.udistrital.mdp.pets.services;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,11 +19,14 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class ReviewService {
 
-    @Autowired
-    private ReviewRepository reviewRepository;
 
-    @Autowired
+    private ReviewRepository reviewRepository;
     private AdoptionRepository adoptionRepository;
+
+    public ReviewService(ReviewRepository reviewRepository, AdoptionRepository adoptionRepository) {
+        this.reviewRepository = reviewRepository;
+        this.adoptionRepository = adoptionRepository;
+    }
 
     @Transactional
     public ReviewEntity createReview(Long adoptionId, ReviewEntity reviewEntity)
