@@ -45,32 +45,31 @@ class EventCalendarServiceTest {
 
     @BeforeEach
     void setUp() {
-
+    
         eventCalendarRepository.deleteAll();
         shelterRepository.deleteAll();
-
+    
         for (int i = 0; i < 3; i++) {
-
+    
             ShelterEntity shelter = new ShelterEntity();
-
+    
             shelter.setName("Shelter " + i);
-            shelter.setAddress("Address " + i);
-            shelter.setPhone("123456789");
-
+            shelter.setCity("Bogota");
+    
             shelter = shelterRepository.save(shelter);
-
+    
             shelterList.add(shelter);
-
+    
             EventCalendarEntity event =
                     new EventCalendarEntity();
-
+    
             event.setType("Adoption event " + i);
             event.setDate(new Date());
             event.setShelter(shelter);
-
+    
             event =
                     eventCalendarRepository.save(event);
-
+    
             eventList.add(event);
         }
     }
