@@ -1,10 +1,7 @@
 package co.edu.udistrital.mdp.pets.services;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -14,8 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 
-import jakarta.transaction.Transactional;
-
 import co.edu.udistrital.mdp.pets.entities.EventCalendarEntity;
 import co.edu.udistrital.mdp.pets.entities.ShelterEntity;
 import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
@@ -24,7 +19,6 @@ import co.edu.udistrital.mdp.pets.repositories.EventCalendarRepository;
 import co.edu.udistrital.mdp.pets.repositories.ShelterRepository;
 
 @DataJpaTest
-@Transactional
 @Import(EventCalendarService.class)
 class EventCalendarServiceTest {
 
@@ -37,251 +31,219 @@ class EventCalendarServiceTest {
     @Autowired
     private ShelterRepository shelterRepository;
 
-    private List<EventCalendarEntity> eventList =
-            new ArrayList<>();
-
-    private List<ShelterEntity> shelterList =
-            new ArrayList<>();
+    private ShelterEntity shelter;
+    private EventCalendarEntity eventCalendar;
 
     @BeforeEach
     void setUp() {
-    
         eventCalendarRepository.deleteAll();
         shelterRepository.deleteAll();
-    
-        for (int i = 0; i < 3; i++) {
-    
-            ShelterEntity shelter = new ShelterEntity();
-    
-            shelter.setName("Shelter " + i);
-            shelter.setCity("Bogota");
-    
-            shelter = shelterRepository.save(shelter);
-    
-            shelterList.add(shelter);
-    
-            EventCalendarEntity event =
-                    new EventCalendarEntity();
-    
-            event.setType("Adoption event " + i);
-            event.setDate(new Date());
-            event.setShelter(shelter);
-    
-            event =
-                    eventCalendarRepository.save(event);
-    
-            eventList.add(event);
-        }
+
+        shelter = new ShelterEntity();
+        shelter.setName("Refugio Test");
+        shelter.setCity("Bogotá");
+        shelter = shelterRepository.save(shelter);
+
+        eventCalendar = new EventCalendarEntity();
+        eventCalendar.setType("Vacunación");
+        eventCalendar.setDate(new Date());
+        eventCalendar.setShelter(shelter);
     }
 
     @Test
     void createEventCalendarTest() throws Exception {
-
-        EventCalendarEntity event =
-                new EventCalendarEntity();
-
-        event.setType("Vaccination");
-        event.setDate(new Date());
-        event.setShelter(shelterList.get(0));
-
         EventCalendarEntity result =
-                eventCalendarService.createEventCalendar(event);
+                eventCalendarService.createEventCalendar(eventCalendar);
 
-        assertNotNull(result);
-
-        EventCalendarEntity entity =
-                eventCalendarRepository
-                        .findById(result.getId())
-                        .get();
-
-        assertEquals(
-                "Vaccination",
-                entity.getType());
-
-        assertEquals(
-                shelterList.get(0).getId(),
-                entity.getShelter().getId());
+        assertNotNull(result.getId());
+        assertEquals("Vacunación", result.getType());
+        assertNotNull(result.getDate());
+        assertEquals(shelter.getId(), result.getShelter().getId());
     }
 
     @Test
     void createEventCalendarWithoutTypeTest() {
-
-        EventCalendarEntity event =
-                new EventCalendarEntity();
-
-        event.setType("");
-        event.setDate(new Date());
-        event.setShelter(shelterList.get(0));
+        eventCalendar.setType("");
 
         assertThrows(
                 IllegalOperationException.class,
-                () -> eventCalendarService
-                        .createEventCalendar(event));
+                () -> eventCalendarService.createEventCalendar(eventCalendar)
+        );
     }
 
     @Test
     void createEventCalendarWithoutDateTest() {
-
-        EventCalendarEntity event =
-                new EventCalendarEntity();
-
-        event.setType("Vaccination");
-        event.setDate(null);
-        event.setShelter(shelterList.get(0));
+        eventCalendar.setDate(null);
 
         assertThrows(
                 IllegalOperationException.class,
-                () -> eventCalendarService
-                        .createEventCalendar(event));
+                () -> eventCalendarService.createEventCalendar(eventCalendar)
+        );
     }
 
     @Test
     void createEventCalendarWithoutShelterTest() {
-
-        EventCalendarEntity event =
-                new EventCalendarEntity();
-
-        event.setType("Vaccination");
-        event.setDate(new Date());
-        event.setShelter(null);
+        eventCalendar.setShelter(null);
 
         assertThrows(
                 IllegalOperationException.class,
-                () -> eventCalendarService
-                        .createEventCalendar(event));
+                () -> eventCalendarService.createEventCalendar(eventCalendar)
+        );
     }
 
     @Test
-    void createEventCalendarWithInvalidShelterTest() {
+    void createEventCalendarWithNonExistingShelterTest() {
+        ShelterEntity invalidShelter = new ShelterEntity();
+        invalidShelter.setId(999999L);
 
-        EventCalendarEntity event =
-                new EventCalendarEntity();
-
-        ShelterEntity invalidShelter =
-                new ShelterEntity();
-
-        invalidShelter.setId(999L);
-
-        event.setType("Vaccination");
-        event.setDate(new Date());
-        event.setShelter(invalidShelter);
+        eventCalendar.setShelter(invalidShelter);
 
         assertThrows(
                 EntityNotFoundException.class,
-                () -> eventCalendarService
-                        .createEventCalendar(event));
+                () -> eventCalendarService.createEventCalendar(eventCalendar)
+        );
     }
 
     @Test
-    void getEventCalendarsTest() {
+    void getEventCalendarsTest() throws Exception {
+        eventCalendarService.createEventCalendar(eventCalendar);
 
         List<EventCalendarEntity> result =
                 eventCalendarService.getEventCalendars();
 
-        assertEquals(3, result.size());
+        assertEquals(1, result.size());
+        assertEquals("Vacunación", result.get(0).getType());
     }
 
     @Test
     void getEventCalendarTest() throws Exception {
-
-        EventCalendarEntity event =
-                eventList.get(0);
+        EventCalendarEntity saved =
+                eventCalendarService.createEventCalendar(eventCalendar);
 
         EventCalendarEntity result =
-                eventCalendarService.getEventCalendar(
-                        event.getId());
+                eventCalendarService.getEventCalendar(saved.getId());
 
-        assertNotNull(result);
-
-        assertEquals(
-                event.getId(),
-                result.getId());
-
-        assertEquals(
-                event.getType(),
-                result.getType());
+        assertEquals(saved.getId(), result.getId());
+        assertEquals("Vacunación", result.getType());
     }
 
     @Test
-    void getEventCalendarNotFoundTest() {
-
+    void getEventCalendarWithNonExistingIdTest() {
         assertThrows(
                 EntityNotFoundException.class,
-                () -> eventCalendarService
-                        .getEventCalendar(999L));
+                () -> eventCalendarService.getEventCalendar(999999L)
+        );
     }
 
     @Test
     void updateEventCalendarTest() throws Exception {
+        EventCalendarEntity saved =
+                eventCalendarService.createEventCalendar(eventCalendar);
 
-        EventCalendarEntity event =
-                eventList.get(0);
-
-        EventCalendarEntity updated =
-                new EventCalendarEntity();
-
-        updated.setType("Updated event");
-        updated.setDate(new Date());
-        updated.setShelter(shelterList.get(1));
+        EventCalendarEntity update = new EventCalendarEntity();
+        update.setType("Consulta veterinaria");
+        update.setDate(new Date());
+        update.setShelter(shelter);
 
         EventCalendarEntity result =
                 eventCalendarService.updateEventCalendar(
-                        event.getId(),
-                        updated);
+                        saved.getId(), update);
 
-        assertEquals(
-                event.getId(),
-                result.getId());
-
-        assertEquals(
-                "Updated event",
-                result.getType());
-
-        assertEquals(
-                shelterList.get(1).getId(),
-                result.getShelter().getId());
+        assertEquals(saved.getId(), result.getId());
+        assertEquals("Consulta veterinaria", result.getType());
+        assertNotNull(result.getDate());
+        assertEquals(shelter.getId(), result.getShelter().getId());
     }
 
     @Test
-    void updateEventCalendarNotFoundTest() {
+    void updateNonExistingEventCalendarTest() {
+        assertThrows(
+                EntityNotFoundException.class,
+                () -> eventCalendarService.updateEventCalendar(
+                        999999L, eventCalendar)
+        );
+    }
 
-        EventCalendarEntity event =
-                new EventCalendarEntity();
+    @Test
+    void updateEventCalendarWithoutTypeTest() throws Exception {
+        EventCalendarEntity saved =
+                eventCalendarService.createEventCalendar(eventCalendar);
 
-        event.setType("Event");
-        event.setDate(new Date());
-        event.setShelter(shelterList.get(0));
+        eventCalendar.setType("");
+
+        assertThrows(
+                IllegalOperationException.class,
+                () -> eventCalendarService.updateEventCalendar(
+                        saved.getId(), eventCalendar)
+        );
+    }
+
+    @Test
+    void updateEventCalendarWithoutDateTest() throws Exception {
+        EventCalendarEntity saved =
+                eventCalendarService.createEventCalendar(eventCalendar);
+
+        eventCalendar.setDate(null);
+
+        assertThrows(
+                IllegalOperationException.class,
+                () -> eventCalendarService.updateEventCalendar(
+                        saved.getId(), eventCalendar)
+        );
+    }
+
+    @Test
+    void updateEventCalendarWithoutShelterTest() throws Exception {
+        EventCalendarEntity saved =
+                eventCalendarService.createEventCalendar(eventCalendar);
+
+        eventCalendar.setShelter(null);
+
+        assertThrows(
+                IllegalOperationException.class,
+                () -> eventCalendarService.updateEventCalendar(
+                        saved.getId(), eventCalendar)
+        );
+    }
+
+    @Test
+    void updateEventCalendarWithNonExistingShelterTest()
+            throws Exception {
+
+        EventCalendarEntity saved =
+                eventCalendarService.createEventCalendar(eventCalendar);
+
+        ShelterEntity invalidShelter = new ShelterEntity();
+        invalidShelter.setId(999999L);
+
+        eventCalendar.setShelter(invalidShelter);
 
         assertThrows(
                 EntityNotFoundException.class,
-                () -> eventCalendarService
-                        .updateEventCalendar(
-                                999L,
-                                event));
+                () -> eventCalendarService.updateEventCalendar(
+                        saved.getId(), eventCalendar)
+        );
     }
 
     @Test
     void deleteEventCalendarTest() throws Exception {
+        EventCalendarEntity saved =
+                eventCalendarService.createEventCalendar(eventCalendar);
 
-        EventCalendarEntity event =
-                eventList.get(0);
+        eventCalendarService.deleteEventCalendar(saved.getId());
 
-        eventCalendarService.deleteEventCalendar(
-                event.getId());
-
-        assertThrows(
-                EntityNotFoundException.class,
-                () -> eventCalendarService
-                        .getEventCalendar(
-                                event.getId()));
+        assertFalse(
+                eventCalendarRepository
+                        .findById(saved.getId())
+                        .isPresent()
+        );
     }
 
     @Test
-    void deleteEventCalendarNotFoundTest() {
-
+    void deleteNonExistingEventCalendarTest() {
         assertThrows(
                 EntityNotFoundException.class,
-                () -> eventCalendarService
-                        .deleteEventCalendar(999L));
+                () -> eventCalendarService.deleteEventCalendar(999999L)
+        );
     }
 }
