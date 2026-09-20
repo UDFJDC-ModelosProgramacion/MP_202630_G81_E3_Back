@@ -1,20 +1,14 @@
 package co.edu.udistrital.mdp.pets.services;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
-
-import jakarta.transaction.Transactional;
 
 import co.edu.udistrital.mdp.pets.entities.ShelterEntity;
 import co.edu.udistrital.mdp.pets.entities.VeterinarianEntity;
@@ -24,7 +18,6 @@ import co.edu.udistrital.mdp.pets.repositories.ShelterRepository;
 import co.edu.udistrital.mdp.pets.repositories.VeterinarianRepository;
 
 @DataJpaTest
-@Transactional
 @Import(VeterinarianService.class)
 class VeterinarianServiceTest {
 
@@ -37,196 +30,222 @@ class VeterinarianServiceTest {
     @Autowired
     private ShelterRepository shelterRepository;
 
-    private List<VeterinarianEntity> veterinarianList = new ArrayList<>();
-    private List<ShelterEntity> shelterList = new ArrayList<>();
+    private ShelterEntity shelter;
+    private VeterinarianEntity veterinarian;
 
     @BeforeEach
     void setUp() {
-
         veterinarianRepository.deleteAll();
         shelterRepository.deleteAll();
 
-        for (int i = 0; i < 3; i++) {
+        shelter = new ShelterEntity();
+        shelter.setName("Refugio Test");
+        shelter.setCity("Bogotá");
+        shelter = shelterRepository.save(shelter);
 
-            ShelterEntity shelter = new ShelterEntity();
-
-            shelter.setName("Shelter " + i);
-            shelter.setCity("Bogota");
-
-            shelter = shelterRepository.save(shelter);
-
-            shelterList.add(shelter);
-
-            VeterinarianEntity veterinarian = new VeterinarianEntity();
-
-            veterinarian.setName("Veterinarian " + i);
-            veterinarian.setSpeciality("Speciality " + i);
-            veterinarian.setShelter(shelter);
-
-            veterinarian = veterinarianRepository.save(veterinarian);
-
-            veterinarianList.add(veterinarian);
-        }
+        veterinarian = new VeterinarianEntity();
+        veterinarian.setName("Carlos Pérez");
+        veterinarian.setSpeciality("Cirugía");
+        veterinarian.setShelter(shelter);
     }
 
     @Test
     void createVeterinarianTest() throws Exception {
-
-        VeterinarianEntity newVeterinarian =
-                new VeterinarianEntity();
-
-        newVeterinarian.setName("New Veterinarian");
-        newVeterinarian.setSpeciality("Surgery");
-        newVeterinarian.setShelter(shelterList.get(0));
-
         VeterinarianEntity result =
-                veterinarianService.createVeterinarian(
-                        newVeterinarian);
+                veterinarianService.createVeterinarian(veterinarian);
 
-        assertNotNull(result);
-
-        VeterinarianEntity entity =
-                veterinarianRepository.findById(
-                        result.getId()).get();
-
-        assertEquals("New Veterinarian", entity.getName());
-        assertEquals("Surgery", entity.getSpeciality());
-        assertEquals(
-                shelterList.get(0).getId(),
-                entity.getShelter().getId());
+        assertNotNull(result.getId());
+        assertEquals("Carlos Pérez", result.getName());
+        assertEquals("Cirugía", result.getSpeciality());
+        assertEquals(shelter.getId(), result.getShelter().getId());
     }
 
     @Test
     void createVeterinarianWithoutNameTest() {
-
-        VeterinarianEntity veterinarian =
-                new VeterinarianEntity();
-
         veterinarian.setName("");
-        veterinarian.setSpeciality("Surgery");
-        veterinarian.setShelter(shelterList.get(0));
 
         assertThrows(
                 IllegalOperationException.class,
-                () -> veterinarianService.createVeterinarian(
-                        veterinarian));
+                () -> veterinarianService.createVeterinarian(veterinarian)
+        );
     }
 
     @Test
     void createVeterinarianWithoutSpecialityTest() {
-
-        VeterinarianEntity veterinarian =
-                new VeterinarianEntity();
-
-        veterinarian.setName("Veterinarian");
         veterinarian.setSpeciality("");
-        veterinarian.setShelter(shelterList.get(0));
 
         assertThrows(
                 IllegalOperationException.class,
-                () -> veterinarianService.createVeterinarian(
-                        veterinarian));
+                () -> veterinarianService.createVeterinarian(veterinarian)
+        );
     }
 
     @Test
     void createVeterinarianWithoutShelterTest() {
-
-        VeterinarianEntity veterinarian =
-                new VeterinarianEntity();
-
-        veterinarian.setName("Veterinarian");
-        veterinarian.setSpeciality("Surgery");
         veterinarian.setShelter(null);
 
         assertThrows(
                 IllegalOperationException.class,
-                () -> veterinarianService.createVeterinarian(
-                        veterinarian));
+                () -> veterinarianService.createVeterinarian(veterinarian)
+        );
     }
 
     @Test
-    void createVeterinarianWithInvalidShelterTest() {
+    void createVeterinarianWithNonExistingShelterTest() {
+        ShelterEntity invalidShelter = new ShelterEntity();
+        invalidShelter.setId(999999L);
 
-        VeterinarianEntity veterinarian =
-                new VeterinarianEntity();
-
-        ShelterEntity invalidShelter =
-                new ShelterEntity();
-
-        invalidShelter.setId(999L);
-
-        veterinarian.setName("Veterinarian");
-        veterinarian.setSpeciality("Surgery");
         veterinarian.setShelter(invalidShelter);
 
         assertThrows(
                 EntityNotFoundException.class,
-                () -> veterinarianService.createVeterinarian(
-                        veterinarian));
+                () -> veterinarianService.createVeterinarian(veterinarian)
+        );
     }
 
     @Test
-    void getVeterinariansTest() {
+    void getVeterinariansTest() throws Exception {
+        veterinarianService.createVeterinarian(veterinarian);
 
         List<VeterinarianEntity> result =
                 veterinarianService.getVeterinarians();
 
-        assertEquals(3, result.size());
+        assertEquals(1, result.size());
+        assertEquals("Carlos Pérez", result.get(0).getName());
     }
 
     @Test
     void getVeterinarianTest() throws Exception {
-
-        VeterinarianEntity entity =
-                veterinarianList.get(0);
+        VeterinarianEntity saved =
+                veterinarianService.createVeterinarian(veterinarian);
 
         VeterinarianEntity result =
-                veterinarianService.getVeterinarian(
-                        entity.getId());
+                veterinarianService.getVeterinarian(saved.getId());
 
-        assertNotNull(result);
-        assertEquals(entity.getId(), result.getId());
-        assertEquals(entity.getName(), result.getName());
+        assertEquals(saved.getId(), result.getId());
+        assertEquals("Carlos Pérez", result.getName());
     }
 
     @Test
-    void getVeterinarianNotFoundTest() {
-
+    void getVeterinarianWithNonExistingIdTest() {
         assertThrows(
                 EntityNotFoundException.class,
-                () -> veterinarianService.getVeterinarian(999L));
+                () -> veterinarianService.getVeterinarian(999999L)
+        );
     }
 
     @Test
     void updateVeterinarianTest() throws Exception {
+        VeterinarianEntity saved =
+                veterinarianService.createVeterinarian(veterinarian);
 
-        VeterinarianEntity veterinarian =
-                veterinarianList.get(0);
-
-        VeterinarianEntity updated =
-                new VeterinarianEntity();
-
-        updated.setName("Updated Veterinarian");
-        updated.setSpeciality("Dermatology");
-        updated.setShelter(shelterList.get(1));
+        VeterinarianEntity update = new VeterinarianEntity();
+        update.setName("Ana Gómez");
+        update.setSpeciality("Dermatología");
+        update.setShelter(shelter);
 
         VeterinarianEntity result =
                 veterinarianService.updateVeterinarian(
-                        veterinarian.getId(),
-                        updated);
+                        saved.getId(), update);
 
-        assertEquals(
-                veterinarian.getId(),
-                result.getId());
+        assertEquals(saved.getId(), result.getId());
+        assertEquals("Ana Gómez", result.getName());
+        assertEquals("Dermatología", result.getSpeciality());
+        assertEquals(shelter.getId(), result.getShelter().getId());
+    }
 
-        assertEquals(
-                "Updated Veterinarian",
-                result.getName());
+    @Test
+    void updateNonExistingVeterinarianTest() {
+        assertThrows(
+                EntityNotFoundException.class,
+                () -> veterinarianService.updateVeterinarian(
+                        999999L, veterinarian)
+        );
+    }
 
-        assertEquals(
-                "Dermatology",
-                result.getSpeciality());
+    @Test
+    void updateVeterinarianWithoutNameTest() throws Exception {
+        VeterinarianEntity saved =
+                veterinarianService.createVeterinarian(veterinarian);
 
+        veterinarian.setName("");
+
+        assertThrows(
+                IllegalOperationException.class,
+                () -> veterinarianService.updateVeterinarian(
+                        saved.getId(), veterinarian)
+        );
+    }
+
+    @Test
+    void updateVeterinarianWithoutSpecialityTest() throws Exception {
+        VeterinarianEntity saved =
+                veterinarianService.createVeterinarian(veterinarian);
+
+        veterinarian.setSpeciality("");
+
+        assertThrows(
+                IllegalOperationException.class,
+                () -> veterinarianService.updateVeterinarian(
+                        saved.getId(), veterinarian)
+        );
+    }
+
+    @Test
+    void updateVeterinarianWithoutShelterTest() throws Exception {
+        VeterinarianEntity saved =
+                veterinarianService.createVeterinarian(veterinarian);
+
+        veterinarian.setShelter(null);
+
+        assertThrows(
+                IllegalOperationException.class,
+                () -> veterinarianService.updateVeterinarian(
+                        saved.getId(), veterinarian)
+        );
+    }
+
+    @Test
+    void updateVeterinarianWithNonExistingShelterTest()
+            throws Exception {
+
+        VeterinarianEntity saved =
+                veterinarianService.createVeterinarian(veterinarian);
+
+        ShelterEntity invalidShelter = new ShelterEntity();
+        invalidShelter.setId(999999L);
+
+        veterinarian.setShelter(invalidShelter);
+
+        assertThrows(
+                EntityNotFoundException.class,
+                () -> veterinarianService.updateVeterinarian(
+                        saved.getId(), veterinarian)
+        );
+    }
+
+    @Test
+    void deleteVeterinarianTest() throws Exception {
+        VeterinarianEntity saved =
+                veterinarianService.createVeterinarian(veterinarian);
+
+        veterinarianService.deleteVeterinarian(saved.getId());
+
+        assertFalse(
+                veterinarianRepository
+                        .findById(saved.getId())
+                        .isPresent()
+        );
+    }
+
+    @Test
+    void deleteNonExistingVeterinarianTest() {
+        assertThrows(
+                EntityNotFoundException.class,
+                () -> veterinarianService.deleteVeterinarian(999999L)
+        );
+    }
+}
         assertEquals(
                 shelterList.get(1).getId(),
                 result.getShelter().getId());
