@@ -51,22 +51,19 @@ class VeterinarianServiceTest {
             ShelterEntity shelter = new ShelterEntity();
 
             shelter.setName("Shelter " + i);
-            shelter.setAddress("Address " + i);
-            shelter.setPhone("123456789");
+            shelter.setCity("Bogota");
 
             shelter = shelterRepository.save(shelter);
 
             shelterList.add(shelter);
 
-            VeterinarianEntity veterinarian =
-                    new VeterinarianEntity();
+            VeterinarianEntity veterinarian = new VeterinarianEntity();
 
             veterinarian.setName("Veterinarian " + i);
             veterinarian.setSpeciality("Speciality " + i);
             veterinarian.setShelter(shelter);
 
-            veterinarian =
-                    veterinarianRepository.save(veterinarian);
+            veterinarian = veterinarianRepository.save(veterinarian);
 
             veterinarianList.add(veterinarian);
         }
