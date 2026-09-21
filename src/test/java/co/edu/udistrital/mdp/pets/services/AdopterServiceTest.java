@@ -46,19 +46,27 @@ class AdopterServiceTest {
 
     private void clearData() {
         entityManager.createQuery("delete from AdopterEntity").executeUpdate();
+        adopterList.clear();
     }
 
     private void insertData() {
         for (int i = 0; i < 3; i++) {
-            AdopterEntity entity = factory.manufacturePojo(AdopterEntity.class);
+            AdopterEntity entity = createValidAdopter(i);
             entityManager.persist(entity);
             adopterList.add(entity);
         }
     }
 
+    private AdopterEntity createValidAdopter(int index) {
+        AdopterEntity entity = factory.manufacturePojo(AdopterEntity.class);
+        entity.setName("Adopter " + index);
+        entity.setPhone("300000000" + index);
+        return entity;
+    }
+
     @Test
     void createAdopter_shouldPersistAdopter() throws IllegalOperationException {
-        AdopterEntity newEntity = factory.manufacturePojo(AdopterEntity.class);
+        AdopterEntity newEntity = createValidAdopter(10);
         AdopterEntity result = adopterService.createAdopter(newEntity);
 
         assertNotNull(result);
@@ -69,14 +77,14 @@ class AdopterServiceTest {
 
     @Test
     void createAdopter_withBlankName_shouldThrowException() {
-        AdopterEntity newEntity = factory.manufacturePojo(AdopterEntity.class);
+        AdopterEntity newEntity = createValidAdopter(11);
         newEntity.setName("");
         assertThrows(IllegalOperationException.class, () -> adopterService.createAdopter(newEntity));
     }
 
     @Test
     void createAdopter_withBlankPhone_shouldThrowException() {
-        AdopterEntity newEntity = factory.manufacturePojo(AdopterEntity.class);
+        AdopterEntity newEntity = createValidAdopter(12);
         newEntity.setPhone("");
         assertThrows(IllegalOperationException.class, () -> adopterService.createAdopter(newEntity));
     }
@@ -103,7 +111,7 @@ class AdopterServiceTest {
     @Test
     void updateAdopter_shouldUpdateAdopter() throws EntityNotFoundException, IllegalOperationException {
         AdopterEntity existing = adopterList.get(0);
-        AdopterEntity updated = factory.manufacturePojo(AdopterEntity.class);
+        AdopterEntity updated = createValidAdopter(13);
         updated.setId(existing.getId());
 
         adopterService.updateAdopter(existing.getId(), updated);
@@ -115,7 +123,7 @@ class AdopterServiceTest {
 
     @Test
     void updateAdopter_withInvalidId_shouldThrowException() {
-        AdopterEntity updated = factory.manufacturePojo(AdopterEntity.class);
+        AdopterEntity updated = createValidAdopter(14);
         assertThrows(EntityNotFoundException.class, () -> adopterService.updateAdopter(0L, updated));
     }
 
@@ -123,7 +131,7 @@ class AdopterServiceTest {
     void deleteAdopter_shouldDeleteAdopter() throws EntityNotFoundException, IllegalOperationException {
         AdopterEntity existing = adopterList.get(0);
         adopterService.deleteAdopter(existing.getId());
-        assertNull(entityManager.find(AdopterEntity.class, existing.getId()) == null);
+        assertNull(entityManager.find(AdopterEntity.class, existing.getId()));
     }
 
     @Test
