@@ -3,7 +3,7 @@ package co.edu.udistrital.mdp.pets.services;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -146,11 +146,11 @@ class ReviewServiceTest {
     void deleteReview_shouldDeleteReview() throws EntityNotFoundException, IllegalOperationException{
         ReviewEntity existing = reviewList.get(0);
         reviewService.deleteReview(adoption.getId(), existing.getId());
-        assertNull(entityManager.find(ReviewEntity.class, existing.getId()) == null);
+        assertNull(entityManager.find(ReviewEntity.class, existing.getId()));
     }
 
     @Test
-    void deleteReview_withInvalidAdoptionId_shouldThrowException() throws IllegalOperationException, EntityNotFoundException{
+    void deleteReview_withInvalidAdoptionId_shouldThrowException() {
         ReviewEntity existing = reviewList.get(0);
         assertThrows(EntityNotFoundException.class, () -> reviewService.deleteReview(0L, existing.getId()));
     }
