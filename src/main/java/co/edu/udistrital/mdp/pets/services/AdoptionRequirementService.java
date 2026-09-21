@@ -5,6 +5,7 @@ import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
 import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
 import co.edu.udistrital.mdp.pets.repositories.AdoptionRequirementRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
@@ -13,6 +14,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AdoptionRequirementService {
   private final AdoptionRequirementRepository requirementRepository;
+
+  @Lazy
+  private AdoptionRequirementService self;
+
     @Transactional
     public AdoptionRequirementEntity createRequirement(AdoptionRequirementEntity requirement) throws IllegalOperationException {
         if (requirement == null || requirement.getDescription() == null || requirement.getDescription().trim().isEmpty()) {
@@ -31,7 +36,7 @@ public class AdoptionRequirementService {
     }
     @Transactional
     public AdoptionRequirementEntity updateRequirement(Long id, AdoptionRequirementEntity requirement) throws EntityNotFoundException, IllegalOperationException {
-        AdoptionRequirementEntity existing = getRequirement(id);
+        AdoptionRequirementEntity existing = self.getRequirement(id);
 
         if (requirement.getDescription() == null || requirement.getDescription().trim().isEmpty()) {
             throw new IllegalOperationException("La descripción del requisito no puede estar vacía.");
@@ -42,7 +47,7 @@ public class AdoptionRequirementService {
     }
     @Transactional
     public void deleteRequirement(Long id) throws EntityNotFoundException {
-        getRequirement(id);
+        self.getRequirement(id);
         requirementRepository.deleteById(id);
     }
 }

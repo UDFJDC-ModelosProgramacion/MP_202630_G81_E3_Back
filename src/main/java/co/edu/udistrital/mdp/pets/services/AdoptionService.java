@@ -5,6 +5,7 @@ import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
 import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
 import co.edu.udistrital.mdp.pets.repositories.AdoptionRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
@@ -13,6 +14,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AdoptionService {
     private final AdoptionRepository adoptionRepository;
+
+    @Lazy
+    private AdoptionService self;
+
     @Transactional
     public AdoptionEntity createAdoption(AdoptionEntity adoption) throws IllegalOperationException {
         if (adoption == null) {
@@ -40,7 +45,7 @@ public class AdoptionService {
     }
     @Transactional
     public AdoptionEntity updateAdoption(Long id, AdoptionEntity adoption) throws EntityNotFoundException, IllegalOperationException {
-        AdoptionEntity existing = getAdoption(id);
+        AdoptionEntity existing = self.getAdoption(id);
         if (adoption.getAdoptionDate() == null) {
             throw new IllegalOperationException("La fecha de adopción no puede ser nula.");
         }
@@ -50,7 +55,7 @@ public class AdoptionService {
     }
     @Transactional
     public void deleteAdoption(Long id) throws EntityNotFoundException {
-        getAdoption(id);
+        self.getAdoption(id);
         adoptionRepository.deleteById(id);
     }
 }
