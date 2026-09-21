@@ -1,0 +1,244 @@
+{
+  "info": {
+    "_postman_id": "537f4119-ade9-4d87-963a-3fd1272e97c8",
+    "name": "Notification",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "57892013",
+    "_collection_link": "https://go.postman.co/collection/57892013-537f4119-ade9-4d87-963a-3fd1272e97c8?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Crear notificacion",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"content\": \"El refugio estará cerrado el domingo.\",\r\n    \"date\": \"2026-09-20\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/shelters/1/notifications",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "shelters",
+            "1",
+            "notifications"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "Crear notificacion",
+          "originalRequest": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"content\": \"El refugio estará cerrado el domingo.\",\r\n    \"date\": \"2026-09-20\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/shelters/1/notifications",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "shelters",
+                "1",
+                "notifications"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "text",
+          "header": null,
+          "cookie": [],
+          "body": "{\r\n    \"id\": 1,\r\n    \"content\": \"El refugio estará cerrado el domingo.\",\r\n    \"date\": \"2026-09-20\",\r\n    \"shelter\": {\r\n        \"id\": 1\r\n    }\r\n}"
+        }
+      ]
+    },
+    {
+      "name": "Obtener una notificacion",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": ""
+        }
+      },
+      "response": [
+        {
+          "name": "Obtener una notificacion",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": ""
+            }
+          },
+          "_postman_previewlanguage": "json",
+          "header": null,
+          "cookie": [],
+          "body": ""
+        }
+      ]
+    },
+    {
+      "name": "Obtener una notificacion de un shelter",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": ""
+        }
+      },
+      "response": [
+        {
+          "name": "Obtener una notificacion",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/shelters/1/notifications/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "shelters",
+                "1",
+                "notifications",
+                "1"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "text",
+          "header": null,
+          "cookie": [],
+          "body": "[\r\n    {\r\n        \"id\": 1,\r\n        \"content\": \"El refugio estará cerrado el domingo.\",\r\n        \"date\": \"2026-09-20\"\r\n    }\r\n]"
+        }
+      ]
+    },
+    {
+      "name": "Notificacion inexistente",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": ""
+        }
+      },
+      "response": [
+        {
+          "name": "Notificacion inexistente",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": ""
+            }
+          },
+          "_postman_previewlanguage": "json",
+          "header": null,
+          "cookie": [],
+          "body": ""
+        }
+      ]
+    },
+    {
+      "name": "Obtener notificacion de otro shelter",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/shelters/1/notifications/5",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "shelters",
+            "1",
+            "notifications",
+            "5"
+          ]
+        },
+        "description": "Digamos si pasa esto:\n\n```\nShelter 1\nNotification 5\n\n ```\n\npero la notification 5 pertenece al shelter 2 entonces no la encuentra\n\nEndFragment"
+      },
+      "response": [
+        {
+          "name": "Obtener notificacion de otro shelter",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": ""
+            }
+          },
+          "_postman_previewlanguage": "json",
+          "header": null,
+          "cookie": [],
+          "body": ""
+        }
+      ]
+    },
+    {
+      "name": "Eliminar notificacion",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/shelters/1/notifications/1",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "shelters",
+            "1",
+            "notifications",
+            "1"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "Eliminar notificacion",
+          "originalRequest": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/shelters/1/notifications/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "shelters",
+                "1",
+                "notifications",
+                "1"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "text",
+          "header": null,
+          "cookie": [],
+          "body": ""
+        }
+      ]
+    }
+  ]
+}
