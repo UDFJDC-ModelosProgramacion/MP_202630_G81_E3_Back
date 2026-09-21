@@ -20,12 +20,16 @@ import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
 @Service
 public class EventCalendarService {
 
-    @Autowired
     private EventCalendarRepository eventCalendarRepository;
-
-    @Autowired
     private ShelterRepository shelterRepository;
 
+    public EventCalendarService(
+            @Autowired EventCalendarRepository eventCalendarRepository,
+            @Autowired ShelterRepository shelterRepository) {
+        this.eventCalendarRepository = eventCalendarRepository;
+        this.shelterRepository = shelterRepository;
+    }
+    
     @Transactional
     public EventCalendarEntity createEventCalendar(
             EventCalendarEntity eventCalendar)

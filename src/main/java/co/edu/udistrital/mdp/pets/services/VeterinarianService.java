@@ -20,11 +20,15 @@ import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
 @Service
 public class VeterinarianService {
 
-    @Autowired
     private VeterinarianRepository veterinarianRepository;
-
-    @Autowired
     private ShelterRepository shelterRepository;
+
+    public VeterinarianService(
+            @Autowired VeterinarianRepository veterinarianRepository,
+            @Autowired ShelterRepository shelterRepository) {
+        this.veterinarianRepository = veterinarianRepository;
+        this.shelterRepository = shelterRepository;
+    }
 
     @Transactional
     public VeterinarianEntity createVeterinarian(

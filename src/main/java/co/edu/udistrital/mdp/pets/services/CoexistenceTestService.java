@@ -8,10 +8,7 @@ import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
-
-import co.edu.udistrital.mdp.pets.entities.AdoptionEntity;
 import co.edu.udistrital.mdp.pets.entities.CoexistenceTestEntity;
-import co.edu.udistrital.mdp.pets.repositories.AdoptionRepository;
 import co.edu.udistrital.mdp.pets.repositories.CoexistenceTestRepository;
 import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
 import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
@@ -20,8 +17,11 @@ import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
 @Service
 public class CoexistenceTestService {
 
-    @Autowired
     private CoexistenceTestRepository coexistenceTestRepository;
+    public CoexistenceTestService(
+            @Autowired CoexistenceTestRepository coexistenceTestRepository) {
+        this.coexistenceTestRepository = coexistenceTestRepository;
+    }
 
     @Transactional
     public CoexistenceTestEntity createCoexistenceTest(

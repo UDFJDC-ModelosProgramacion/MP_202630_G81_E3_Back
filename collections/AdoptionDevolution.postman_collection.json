@@ -1,0 +1,1252 @@
+{
+  "info": {
+    "_postman_id": "ad22b906-0553-400e-a8c1-4c69cdc03fa1",
+    "name": "AdoptionDevolution",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "57894394",
+    "_collection_link": "https://go.postman.co/collection/57894394-ad22b906-0553-400e-a8c1-4c69cdc03fa1?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Crear la devolución de una adopción",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"date\": \"2026-09-15\",\n    \"reason\": \"El adoptante no pudo continuar con los cuidados de la mascota.\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/adoptions/{{adoption_id_1}}/devolution",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "adoptions",
+            "{{adoption_id_1}}",
+            "devolution"
+          ]
+        },
+        "description": "Registra la devolución de una adopción (relación 1 a 1). Reglas: reason y date obligatorios; la adopción no puede tener ya una devolución; date no puede ser anterior a la fecha de la adopción. Respuesta: representación básica (id, date, reason)."
+      },
+      "response": [
+        {
+          "name": "Crear la devolución de una adopción",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"date\": \"2026-09-15\",\n    \"reason\": \"El adoptante no pudo continuar con los cuidados de la mascota.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/adoptions/{{adoption_id_1}}/devolution",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "adoptions",
+                "{{adoption_id_1}}",
+                "devolution"
+              ]
+            }
+          },
+          "status": "Created",
+          "code": 201,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"id\": 1,\n    \"date\": \"2026-09-15\",\n    \"reason\": \"El adoptante no pudo continuar con los cuidados de la mascota.\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "Crear la devolución de una adopción que no existe",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"date\": \"2026-09-15\",\n    \"reason\": \"El adoptante no pudo continuar con los cuidados de la mascota.\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/adoptions/0/devolution",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "adoptions",
+            "0",
+            "devolution"
+          ]
+        },
+        "description": "Adopción inexistente → 404."
+      },
+      "response": [
+        {
+          "name": "Crear la devolución de una adopción que no existe",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"date\": \"2026-09-15\",\n    \"reason\": \"El adoptante no pudo continuar con los cuidados de la mascota.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/adoptions/0/devolution",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "adoptions",
+                "0",
+                "devolution"
+              ]
+            }
+          },
+          "status": "Not Found",
+          "code": 404,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"apierror\": {\n        \"status\": \"NOT_FOUND\",\n        \"timestamp\": \"20-09-2026 11:08:41\",\n        \"message\": \"Adopción no encontrada\"\n    }\n}"
+        }
+      ]
+    },
+    {
+      "name": "Crear la devolución de una adopción sin razón válida",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"date\": \"2026-09-15\",\n    \"reason\": \"\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/adoptions/{{adoption_id_1}}/devolution",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "adoptions",
+            "{{adoption_id_1}}",
+            "devolution"
+          ]
+        },
+        "description": "reason nula o en blanco → 412."
+      },
+      "response": [
+        {
+          "name": "Crear la devolución de una adopción sin razón válida",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"date\": \"2026-09-15\",\n    \"reason\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/adoptions/{{adoption_id_1}}/devolution",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "adoptions",
+                "{{adoption_id_1}}",
+                "devolution"
+              ]
+            }
+          },
+          "status": "Precondition Failed",
+          "code": 412,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"apierror\": {\n        \"status\": \"PRECONDITION_FAILED\",\n        \"timestamp\": \"20-09-2026 11:08:53\",\n        \"message\": \"La razón de la devolución no es válida\"\n    }\n}"
+        }
+      ]
+    },
+    {
+      "name": "Crear la devolución de una adopción sin fecha válida",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"reason\": \"El adoptante no pudo continuar con los cuidados de la mascota.\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/adoptions/{{adoption_id_1}}/devolution",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "adoptions",
+            "{{adoption_id_1}}",
+            "devolution"
+          ]
+        },
+        "description": "date nula → 412."
+      },
+      "response": [
+        {
+          "name": "Crear la devolución de una adopción sin fecha válida",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"reason\": \"El adoptante no pudo continuar con los cuidados de la mascota.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/adoptions/{{adoption_id_1}}/devolution",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "adoptions",
+                "{{adoption_id_1}}",
+                "devolution"
+              ]
+            }
+          },
+          "status": "Precondition Failed",
+          "code": 412,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"apierror\": {\n        \"status\": \"PRECONDITION_FAILED\",\n        \"timestamp\": \"20-09-2026 11:09:05\",\n        \"message\": \"La fecha de la devolución no es válida\"\n    }\n}"
+        }
+      ]
+    },
+    {
+      "name": "Crear la devolución de una adopción con fecha anterior a la adopción",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"date\": \"2000-01-01\",\n    \"reason\": \"El adoptante no pudo continuar con los cuidados de la mascota.\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/adoptions/{{adoption_id_no_devolution}}/devolution",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "adoptions",
+            "{{adoption_id_no_devolution}}",
+            "devolution"
+          ]
+        },
+        "description": "date es anterior a la fecha de la adopción → 412. La misma fecha de la adopción sí se permite."
+      },
+      "response": [
+        {
+          "name": "Crear la devolución de una adopción con fecha anterior a la adopción",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"date\": \"2000-01-01\",\n    \"reason\": \"El adoptante no pudo continuar con los cuidados de la mascota.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/adoptions/{{adoption_id_no_devolution}}/devolution",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "adoptions",
+                "{{adoption_id_no_devolution}}",
+                "devolution"
+              ]
+            }
+          },
+          "status": "Precondition Failed",
+          "code": 412,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"apierror\": {\n        \"status\": \"PRECONDITION_FAILED\",\n        \"timestamp\": \"20-09-2026 11:09:17\",\n        \"message\": \"La fecha de la devolución no puede ser anterior a la fecha de la adopción\"\n    }\n}"
+        }
+      ]
+    },
+    {
+      "name": "Crear la devolución de una adopción que ya tiene una",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"date\": \"2026-09-15\",\n    \"reason\": \"El adoptante no pudo continuar con los cuidados de la mascota.\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/adoptions/{{adoption_id_1}}/devolution",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "adoptions",
+            "{{adoption_id_1}}",
+            "devolution"
+          ]
+        },
+        "description": "La adopción ya tiene una devolución registrada → 412."
+      },
+      "response": [
+        {
+          "name": "Crear la devolución de una adopción que ya tiene una",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"date\": \"2026-09-15\",\n    \"reason\": \"El adoptante no pudo continuar con los cuidados de la mascota.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/adoptions/{{adoption_id_1}}/devolution",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "adoptions",
+                "{{adoption_id_1}}",
+                "devolution"
+              ]
+            }
+          },
+          "status": "Precondition Failed",
+          "code": 412,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"apierror\": {\n        \"status\": \"PRECONDITION_FAILED\",\n        \"timestamp\": \"20-09-2026 11:09:29\",\n        \"message\": \"La adopción ya tiene una devolución registrada\"\n    }\n}"
+        }
+      ]
+    },
+    {
+      "name": "Obtener la devolución de una adopción",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/adoptions/{{adoption_id_1}}/devolution",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "adoptions",
+            "{{adoption_id_1}}",
+            "devolution"
+          ]
+        },
+        "description": "Retorna la devolución de la adopción. Respuesta: representación básica (id, date, reason)."
+      },
+      "response": [
+        {
+          "name": "Obtener la devolución de una adopción",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/adoptions/{{adoption_id_1}}/devolution",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "adoptions",
+                "{{adoption_id_1}}",
+                "devolution"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"id\": 1,\n    \"date\": \"2026-09-15\",\n    \"reason\": \"El adoptante no pudo continuar con los cuidados de la mascota.\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "Obtener la devolución de una adopción que no existe",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/adoptions/0/devolution",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "adoptions",
+            "0",
+            "devolution"
+          ]
+        },
+        "description": "Adopción inexistente → 404."
+      },
+      "response": [
+        {
+          "name": "Obtener la devolución de una adopción que no existe",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/adoptions/0/devolution",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "adoptions",
+                "0",
+                "devolution"
+              ]
+            }
+          },
+          "status": "Not Found",
+          "code": 404,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"apierror\": {\n        \"status\": \"NOT_FOUND\",\n        \"timestamp\": \"20-09-2026 11:09:41\",\n        \"message\": \"Adopción no encontrada\"\n    }\n}"
+        }
+      ]
+    },
+    {
+      "name": "Obtener la devolución de una adopción sin devolución",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/adoptions/{{adoption_id_no_devolution}}/devolution",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "adoptions",
+            "{{adoption_id_no_devolution}}",
+            "devolution"
+          ]
+        },
+        "description": "La adopción existe pero no tiene devolución → 404."
+      },
+      "response": [
+        {
+          "name": "Obtener la devolución de una adopción sin devolución",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/adoptions/{{adoption_id_no_devolution}}/devolution",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "adoptions",
+                "{{adoption_id_no_devolution}}",
+                "devolution"
+              ]
+            }
+          },
+          "status": "Not Found",
+          "code": 404,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"apierror\": {\n        \"status\": \"NOT_FOUND\",\n        \"timestamp\": \"20-09-2026 11:09:53\",\n        \"message\": \"Devolución no encontrada para esta adopción\"\n    }\n}"
+        }
+      ]
+    },
+    {
+      "name": "Editar la devolución de una adopción",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"date\": \"2026-09-15\",\n    \"reason\": \"El adoptante cambió de ciudad y no puede llevar consigo a la mascota.\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/adoptions/{{adoption_id_1}}/devolution",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "adoptions",
+            "{{adoption_id_1}}",
+            "devolution"
+          ]
+        },
+        "description": "Reemplaza date y reason de la devolución. Respuesta: representación básica (id, date, reason)."
+      },
+      "response": [
+        {
+          "name": "Editar la devolución de una adopción",
+          "originalRequest": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"date\": \"2026-09-15\",\n    \"reason\": \"El adoptante cambió de ciudad y no puede llevar consigo a la mascota.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/adoptions/{{adoption_id_1}}/devolution",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "adoptions",
+                "{{adoption_id_1}}",
+                "devolution"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"id\": 1,\n    \"date\": \"2026-09-15\",\n    \"reason\": \"El adoptante cambió de ciudad y no puede llevar consigo a la mascota.\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "Editar la devolución de una adopción que no existe",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"date\": \"2026-09-15\",\n    \"reason\": \"El adoptante no pudo continuar con los cuidados de la mascota.\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/adoptions/0/devolution",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "adoptions",
+            "0",
+            "devolution"
+          ]
+        },
+        "description": "Adopción inexistente → 404."
+      },
+      "response": [
+        {
+          "name": "Editar la devolución de una adopción que no existe",
+          "originalRequest": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"date\": \"2026-09-15\",\n    \"reason\": \"El adoptante no pudo continuar con los cuidados de la mascota.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/adoptions/0/devolution",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "adoptions",
+                "0",
+                "devolution"
+              ]
+            }
+          },
+          "status": "Not Found",
+          "code": 404,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"apierror\": {\n        \"status\": \"NOT_FOUND\",\n        \"timestamp\": \"20-09-2026 11:10:05\",\n        \"message\": \"Adopción no encontrada\"\n    }\n}"
+        }
+      ]
+    },
+    {
+      "name": "Editar la devolución de una adopción sin devolución",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"date\": \"2026-09-15\",\n    \"reason\": \"El adoptante no pudo continuar con los cuidados de la mascota.\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/adoptions/{{adoption_id_no_devolution}}/devolution",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "adoptions",
+            "{{adoption_id_no_devolution}}",
+            "devolution"
+          ]
+        },
+        "description": "La adopción existe pero no tiene devolución → 404."
+      },
+      "response": [
+        {
+          "name": "Editar la devolución de una adopción sin devolución",
+          "originalRequest": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"date\": \"2026-09-15\",\n    \"reason\": \"El adoptante no pudo continuar con los cuidados de la mascota.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/adoptions/{{adoption_id_no_devolution}}/devolution",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "adoptions",
+                "{{adoption_id_no_devolution}}",
+                "devolution"
+              ]
+            }
+          },
+          "status": "Not Found",
+          "code": 404,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"apierror\": {\n        \"status\": \"NOT_FOUND\",\n        \"timestamp\": \"20-09-2026 11:10:17\",\n        \"message\": \"Devolución no encontrada para esta adopción\"\n    }\n}"
+        }
+      ]
+    },
+    {
+      "name": "Editar la devolución de una adopción con razón inválida",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"date\": \"2026-09-15\",\n    \"reason\": \"\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/adoptions/{{adoption_id_1}}/devolution",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "adoptions",
+            "{{adoption_id_1}}",
+            "devolution"
+          ]
+        },
+        "description": "reason nula o en blanco → 412."
+      },
+      "response": [
+        {
+          "name": "Editar la devolución de una adopción con razón inválida",
+          "originalRequest": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"date\": \"2026-09-15\",\n    \"reason\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/adoptions/{{adoption_id_1}}/devolution",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "adoptions",
+                "{{adoption_id_1}}",
+                "devolution"
+              ]
+            }
+          },
+          "status": "Precondition Failed",
+          "code": 412,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"apierror\": {\n        \"status\": \"PRECONDITION_FAILED\",\n        \"timestamp\": \"20-09-2026 11:10:29\",\n        \"message\": \"La razón de la devolución no es válida\"\n    }\n}"
+        }
+      ]
+    },
+    {
+      "name": "Editar la devolución de una adopción con fecha inválida",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"reason\": \"El adoptante no pudo continuar con los cuidados de la mascota.\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/adoptions/{{adoption_id_1}}/devolution",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "adoptions",
+            "{{adoption_id_1}}",
+            "devolution"
+          ]
+        },
+        "description": "date nula → 412."
+      },
+      "response": [
+        {
+          "name": "Editar la devolución de una adopción con fecha inválida",
+          "originalRequest": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"reason\": \"El adoptante no pudo continuar con los cuidados de la mascota.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/adoptions/{{adoption_id_1}}/devolution",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "adoptions",
+                "{{adoption_id_1}}",
+                "devolution"
+              ]
+            }
+          },
+          "status": "Precondition Failed",
+          "code": 412,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"apierror\": {\n        \"status\": \"PRECONDITION_FAILED\",\n        \"timestamp\": \"20-09-2026 11:10:41\",\n        \"message\": \"La fecha de la devolución no es válida\"\n    }\n}"
+        }
+      ]
+    },
+    {
+      "name": "Editar la devolución reasignándola a otra adopción",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"date\": \"2026-09-15\",\n    \"reason\": \"El adoptante no pudo continuar con los cuidados de la mascota.\",\n    \"adoption\": {\n        \"id\": {{adoption_id_no_devolution}}\n    }\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/adoptions/{{adoption_id_1}}/devolution",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "adoptions",
+            "{{adoption_id_1}}",
+            "devolution"
+          ]
+        },
+        "description": "Si se envía adoption con un id distinto al de la URL → 412. La devolución no puede cambiar de adopción."
+      },
+      "response": [
+        {
+          "name": "Editar la devolución reasignándola a otra adopción",
+          "originalRequest": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"date\": \"2026-09-15\",\n    \"reason\": \"El adoptante no pudo continuar con los cuidados de la mascota.\",\n    \"adoption\": {\n        \"id\": {{adoption_id_no_devolution}}\n    }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/adoptions/{{adoption_id_1}}/devolution",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "adoptions",
+                "{{adoption_id_1}}",
+                "devolution"
+              ]
+            }
+          },
+          "status": "Precondition Failed",
+          "code": 412,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"apierror\": {\n        \"status\": \"PRECONDITION_FAILED\",\n        \"timestamp\": \"20-09-2026 11:10:53\",\n        \"message\": \"Una devolución no puede ser reasignada a una adopción diferente\"\n    }\n}"
+        }
+      ]
+    },
+    {
+      "name": "Borrar la devolución de una adopción",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/adoptions/{{adoption_id_1}}/devolution",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "adoptions",
+            "{{adoption_id_1}}",
+            "devolution"
+          ]
+        },
+        "description": "Borra la devolución; la adopción no se borra."
+      },
+      "response": [
+        {
+          "name": "Borrar la devolución de una adopción",
+          "originalRequest": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/adoptions/{{adoption_id_1}}/devolution",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "adoptions",
+                "{{adoption_id_1}}",
+                "devolution"
+              ]
+            }
+          },
+          "status": "No Content",
+          "code": 204,
+          "_postman_previewlanguage": "text",
+          "header": [],
+          "cookie": [],
+          "body": ""
+        }
+      ]
+    },
+    {
+      "name": "Borrar la devolución de una adopción que no existe",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/adoptions/0/devolution",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "adoptions",
+            "0",
+            "devolution"
+          ]
+        },
+        "description": "Adopción inexistente → 404."
+      },
+      "response": [
+        {
+          "name": "Borrar la devolución de una adopción que no existe",
+          "originalRequest": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/adoptions/0/devolution",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "adoptions",
+                "0",
+                "devolution"
+              ]
+            }
+          },
+          "status": "Not Found",
+          "code": 404,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"apierror\": {\n        \"status\": \"NOT_FOUND\",\n        \"timestamp\": \"20-09-2026 11:11:05\",\n        \"message\": \"Adopción no encontrada\"\n    }\n}"
+        }
+      ]
+    },
+    {
+      "name": "Borrar la devolución de una adopción sin devolución",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/adoptions/{{adoption_id_no_devolution}}/devolution",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "adoptions",
+            "{{adoption_id_no_devolution}}",
+            "devolution"
+          ]
+        },
+        "description": "La adopción existe pero no tiene devolución → 404."
+      },
+      "response": [
+        {
+          "name": "Borrar la devolución de una adopción sin devolución",
+          "originalRequest": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/adoptions/{{adoption_id_no_devolution}}/devolution",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "adoptions",
+                "{{adoption_id_no_devolution}}",
+                "devolution"
+              ]
+            }
+          },
+          "status": "Not Found",
+          "code": 404,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"apierror\": {\n        \"status\": \"NOT_FOUND\",\n        \"timestamp\": \"20-09-2026 11:11:17\",\n        \"message\": \"Devolución no encontrada para esta adopción\"\n    }\n}"
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "adoption_id_1",
+      "value": "1"
+    },
+    {
+      "key": "adoption_id_no_devolution",
+      "value": "2"
+    }
+  ]
+}
