@@ -1,0 +1,259 @@
+{
+  "info": {
+    "_postman_id": "d4286b07-aad4-419d-87c3-91d27c29fe25",
+    "name": "Review",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "57892013",
+    "_collection_link": "https://go.postman.co/collection/57892013-d4286b07-aad4-419d-87c3-91d27c29fe25?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Crear review",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/adoptions/1/reviews",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "adoptions",
+            "1",
+            "reviews"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "Crear review",
+          "originalRequest": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"comments\": \"La experiencia de adopción fue excelente.\",\r\n    \"score\": \"5\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/adoptions/1/reviews",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "adoptions",
+                "1",
+                "reviews"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "text",
+          "header": null,
+          "cookie": [],
+          "body": "{\r\n    \"id\": 1,\r\n    \"comments\": \"La experiencia de adopción fue excelente.\",\r\n    \"score\": \"5\"\r\n}"
+        }
+      ]
+    },
+    {
+      "name": "Obtener reviews de una adopcion",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/adoptions/1/reviews",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "adoptions",
+            "1",
+            "reviews"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "Obtener reviews de una adopcion",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/adoptions/1/reviews",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "adoptions",
+                "1",
+                "reviews"
+              ]
+            }
+          },
+          "_postman_previewlanguage": "json",
+          "header": null,
+          "cookie": [],
+          "body": ""
+        }
+      ]
+    },
+    {
+      "name": "Obtener un review",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": ""
+        }
+      },
+      "response": [
+        {
+          "name": "Obtener un review",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": ""
+            }
+          },
+          "_postman_previewlanguage": "json",
+          "header": null,
+          "cookie": [],
+          "body": ""
+        }
+      ]
+    },
+    {
+      "name": "Obtener review inexistente",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": ""
+        }
+      },
+      "response": [
+        {
+          "name": "Obtener review inexistente",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": ""
+            }
+          },
+          "_postman_previewlanguage": "json",
+          "header": null,
+          "cookie": [],
+          "body": ""
+        }
+      ]
+    },
+    {
+      "name": "Obtener un review que pertenece a otra adopcion",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": ""
+        }
+      },
+      "response": [
+        {
+          "name": "Obtener un review que pertenece a otra adopcion",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": ""
+            }
+          },
+          "_postman_previewlanguage": "json",
+          "header": null,
+          "cookie": [],
+          "body": ""
+        }
+      ]
+    },
+    {
+      "name": "Eliminar review",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": ""
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Actualizar review",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"comments\": \"El perrito es muy amoroso, ya le enseñe a sentarse y dar la pata\",\r\n    \"score\": \"4\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/adoptions/1/reviews/1",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "adoptions",
+            "1",
+            "reviews",
+            "1"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "Actualizar review",
+          "originalRequest": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"comments\": \"El perrito es muy amoroso, ya le enseñe a sentarse y dar la pata\",\r\n    \"score\": \"4\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/adoptions/1/reviews/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "adoptions",
+                "1",
+                "reviews",
+                "1"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "text",
+          "header": null,
+          "cookie": [],
+          "body": "{\r\n    \"id\":1\r\n    \"comments\": \"La experiencia fue muy buena.\",\r\n    \"score\": \"4\"\r\n    \"reviews\": []\r\n}"
+        }
+      ]
+    }
+  ]
+}
