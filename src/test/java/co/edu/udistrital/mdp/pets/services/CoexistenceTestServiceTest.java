@@ -28,6 +28,8 @@ import co.edu.udistrital.mdp.pets.repositories.ShelterRepository;
 @Import(CoexistenceTestService.class)
 class CoexistenceTestServiceTest {
 
+    private static final String ACTION_1 = "action1"; // Compliant
+
     @Autowired
     private CoexistenceTestService coexistenceTestService;
 
@@ -59,6 +61,24 @@ class CoexistenceTestServiceTest {
         coexistenceTest = new CoexistenceTestEntity();
         coexistenceTest.setStartDate(new Date());
         coexistenceTest.setResult("Aprobado");
+    }
+
+    public void run() {
+        prepare(ACTION_1); // Compliant
+        execute(ACTION_1);
+        release(ACTION_1);
+    }
+
+    private void prepare(String action) {
+        // no-op
+    }
+
+    private void execute(String action) {
+        // no-op
+    }
+
+    private void release(String action) {
+        // no-op
     }
 
     @Test

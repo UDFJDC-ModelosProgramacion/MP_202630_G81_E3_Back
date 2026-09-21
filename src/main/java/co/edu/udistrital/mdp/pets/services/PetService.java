@@ -23,6 +23,8 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class PetService {
 
+    private static final String PET_NOT_FOUND = "Pet not found";
+
     //Initialize constants for event types and active adoption statuses
     public static final String ARRIVAL_EVENT_TYPE = "ARRIVAL";
 
@@ -87,7 +89,7 @@ public class PetService {
         log.info("Inicia proceso de consultar la mascota con id = {0}", petId);
         Optional<PetEntity> petEntity = petRepository.findById(petId);
         if (petEntity.isEmpty())
-            throw new EntityNotFoundException("Pet not found");
+            throw new EntityNotFoundException(PET_NOT_FOUND);
         return petEntity.get();
     }
 
@@ -106,7 +108,7 @@ public class PetService {
         log.info("Inicia proceso de actualizar la mascota con id = {0}", petId);
         Optional<PetEntity> petEntity = petRepository.findById(petId);
         if (petEntity.isEmpty())
-            throw new EntityNotFoundException("Pet not found");
+            throw new EntityNotFoundException(PET_NOT_FOUND);
 
         PetEntity existing = petEntity.get();
 
@@ -130,7 +132,7 @@ public class PetService {
         log.info("Inicia proceso de borrar la mascota con id = {0}", petId);
         Optional<PetEntity> petEntity = petRepository.findById(petId);
         if (petEntity.isEmpty())
-            throw new EntityNotFoundException("Pet not found");
+            throw new EntityNotFoundException(PET_NOT_FOUND);
 
         List<AdoptionEntity> adoptions = adoptionRepository.findByPetId(petId);
         if (!adoptions.isEmpty())

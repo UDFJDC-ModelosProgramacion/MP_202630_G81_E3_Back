@@ -20,6 +20,8 @@ import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
 @Service
 public class VeterinarianService {
 
+    private static final String VETERINARIAN_NOT_FOUND = "Veterinarian not found";
+
     private VeterinarianRepository veterinarianRepository;
     private ShelterRepository shelterRepository;
 
@@ -91,7 +93,7 @@ public class VeterinarianService {
 
         if (veterinarian.isEmpty()) {
             throw new EntityNotFoundException(
-                    "Veterinarian not found");
+                    VETERINARIAN_NOT_FOUND);
         }
 
         return veterinarian.get();
@@ -112,7 +114,7 @@ public class VeterinarianService {
 
         if (existing.isEmpty()) {
             throw new EntityNotFoundException(
-                    "Veterinarian not found");
+                    VETERINARIAN_NOT_FOUND);
         }
 
         if (veterinarian.getName() == null ||
@@ -164,7 +166,7 @@ public class VeterinarianService {
 
         if (veterinarian.isEmpty()) {
             throw new EntityNotFoundException(
-                    "Veterinarian not found");
+                    VETERINARIAN_NOT_FOUND);
         }
 
         veterinarianRepository.deleteById(veterinarianId);

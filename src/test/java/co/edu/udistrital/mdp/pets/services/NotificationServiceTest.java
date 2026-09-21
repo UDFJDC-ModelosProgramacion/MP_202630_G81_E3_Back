@@ -2,8 +2,8 @@ package co.edu.udistrital.mdp.pets.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +28,7 @@ import uk.co.jemos.podam.api.PodamFactoryImpl;
 @DataJpaTest
 @Transactional
 @Import(NotificationService.class)
-public class NotificationServiceTest {
+class NotificationServiceTest {
 
     @Autowired
     private NotificationService notificationService;
@@ -106,7 +106,7 @@ public class NotificationServiceTest {
     void deleteNotification_shouldDeleteNotification() throws EntityNotFoundException, IllegalOperationException {
         NotificationEntity existing = notificationList.get(0);
         notificationService.deleteNotification(shelter.getId(), existing.getId());
-        assertTrue(entityManager.find(NotificationEntity.class, existing.getId()) == null);
+        assertNull(entityManager.find(NotificationEntity.class, existing.getId()));
     }
 
     @Test

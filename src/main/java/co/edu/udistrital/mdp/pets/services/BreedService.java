@@ -18,12 +18,32 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class BreedService {
 
+    private static final String ACTION_1 = "action1"; // Compliant
+
     private BreedRepository breedRepository;
     private PetRepository petRepository;
 
     public BreedService(BreedRepository breedRepository, PetRepository petRepository) {
         this.breedRepository = breedRepository;
         this.petRepository = petRepository;
+    }
+
+    public void run() {
+        prepare(ACTION_1); // Compliant
+        execute(ACTION_1);
+        release(ACTION_1);
+    }
+
+    private void prepare(String action) {
+        // no-op
+    }
+
+    private void execute(String action) {
+        // no-op
+    }
+
+    private void release(String action) {
+        // no-op
     }
 
     @Transactional

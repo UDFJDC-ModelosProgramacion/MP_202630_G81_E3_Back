@@ -45,10 +45,7 @@ class CaseDevolutionServiceTest {
     private List<AdoptionEntity> adoptionList = new ArrayList<>();
     private CaseDevolutionEntity existingDevolution;
 
-    /*
-     * adoptionList.get(0) ya tiene una devolución registrada (existingDevolution);
-     * adoptionList.get(1) no tiene devolución.
-     */
+ 
     @BeforeEach
     void setUp() {
         clearData();

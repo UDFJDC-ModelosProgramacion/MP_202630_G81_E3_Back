@@ -32,7 +32,7 @@ import uk.co.jemos.podam.api.PodamFactoryImpl;
 @DataJpaTest
 @Transactional
 @Import(ReviewService.class)
-public class ReviewServiceTest {
+class ReviewServiceTest {
 
     @Autowired
     private ReviewService reviewService;
@@ -95,26 +95,26 @@ public class ReviewServiceTest {
     }
 
     @Test
-    void createReview_withInvalidAdoptionId_shouldThrowException() throws IllegalOperationException, EntityNotFoundException{
+    void createReview_withInvalidAdoptionId_shouldThrowException(){
         ReviewEntity newEntity = factory.manufacturePojo(ReviewEntity.class);
         assertThrows(EntityNotFoundException.class, () -> reviewService.createReview(0L, newEntity));
     }
 
     @Test
-    void createReview_withBlankComments_shouldThrowException() throws IllegalOperationException, EntityNotFoundException{
+    void createReview_withBlankComments_shouldThrowException(){
         ReviewEntity newEntity = factory.manufacturePojo(ReviewEntity.class);
         newEntity.setComments("");
         assertThrows(IllegalOperationException.class, () -> reviewService.createReview(adoption.getId(), newEntity));
     }
 
     @Test
-    void getReviews_shouldReturnAllReviewsOfAdoption() throws EntityNotFoundException, IllegalOperationException{
+    void getReviews_shouldReturnAllReviewsOfAdoption() throws EntityNotFoundException{
         List<ReviewEntity> result = reviewService.getReviews(adoption.getId());
         assertEquals(reviewList.size(), result.size());
     }
 
     @Test
-    void getReview_shouldReturnReview() throws EntityNotFoundException, IllegalOperationException, IllegalOperationException{
+    void getReview_shouldReturnReview() throws EntityNotFoundException, IllegalOperationException{
         ReviewEntity existing = reviewList.get(0);
         ReviewEntity result = reviewService.getReview(adoption.getId(), existing.getId());
         assertNotNull(result);
@@ -122,7 +122,7 @@ public class ReviewServiceTest {
     }
 
     @Test
-    void getReview_notBelongingToAdoption_shouldThrowException() throws IllegalOperationException, EntityNotFoundException{
+    void getReview_notBelongingToAdoption_shouldThrowException() {
         ReviewEntity orphan = factory.manufacturePojo(ReviewEntity.class);
         orphan.setAdoption(null);
         entityManager.persist(orphan);
@@ -146,7 +146,7 @@ public class ReviewServiceTest {
     void deleteReview_shouldDeleteReview() throws EntityNotFoundException, IllegalOperationException{
         ReviewEntity existing = reviewList.get(0);
         reviewService.deleteReview(adoption.getId(), existing.getId());
-        assertTrue(entityManager.find(ReviewEntity.class, existing.getId()) == null);
+        assertNull(entityManager.find(ReviewEntity.class, existing.getId()) == null);
     }
 
     @Test
