@@ -1,0 +1,361 @@
+{
+  "info": {
+    "_postman_id": "92022f7b-d80a-415e-82e4-6fb3e064f4ff",
+    "name": "Adopter",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "57892013",
+    "_collection_link": "https://go.postman.co/collection/57892013-92022f7b-d80a-415e-82e4-6fb3e064f4ff?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Crear un adoptante",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"name\": \"Juan Perez\",\r\n    \"phone\": \"3001234567\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/adopters",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "adopters"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "Crear un adoptante",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Juan Perez\",\r\n    \"phone\": \"3001234567\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/adopters",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "adopters"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "cookie": [],
+          "body": "{\r\n    \"id\": 1,\r\n    \"name\": \"Juan Perez\",\r\n    \"phone\": \"3001234567\",\r\n    \"adoptions\": []\r\n}"
+        }
+      ]
+    },
+    {
+      "name": "Obtener todos los adoptantes",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/adopters",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "adopters"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "Obtener todos los adoptantes",
+          "originalRequest": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/adopters",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "adopters"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "cookie": [],
+          "body": "[\r\n    {\r\n        \"id\": 1,\r\n        \"name\": \"Juan Perez\",\r\n        \"phone\": \"3001234567\",\r\n        \"adoptions\": []\r\n    }\r\n]"
+        }
+      ]
+    },
+    {
+      "name": "Obtener un adoptante",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": ""
+        }
+      },
+      "response": [
+        {
+          "name": "Obtener un adoptante",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": ""
+            }
+          },
+          "_postman_previewlanguage": "json",
+          "header": null,
+          "cookie": [],
+          "body": ""
+        }
+      ]
+    },
+    {
+      "name": "Obtener un adoptante que no existe",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"name\": \"Eli\",\r\n    \"phone\": \"300123427\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/adopters/0",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "adopters",
+            "0"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "Obtener un adoptante que no existe",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Eli\",\r\n    \"phone\": \"300123427\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/adopters/0",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "adopters",
+                "0"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "text",
+          "header": null,
+          "cookie": [],
+          "body": "{\r\n    \"apierror\": {\r\n        \"status\": \"404 NOT_FOUND\",\r\n        \"message\": \"Adopter not found\"\r\n    }\r\n}"
+        }
+      ]
+    },
+    {
+      "name": "Actualizar un adoptante que no existe",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"name\": \"Juan David Perez\",\r\n    \"phone\": \"3119876543\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/adopters/1",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "adopters",
+            "1"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "Actualizar un adoptante que no existe",
+          "originalRequest": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Juan\",\r\n    \"phone\": \"3119876543\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/adopters/0",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "adopters",
+                "0"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "text",
+          "header": null,
+          "cookie": [],
+          "body": "{\r\n    \"apierror\": {\r\n        \"status\": \"404 NOT_FOUND\",\r\n        \"message\": \"Adopter not found\"\r\n    }\r\n}"
+        }
+      ]
+    },
+    {
+      "name": "Actualizar un adoptante",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"name\": \"Juan David Perez\",\r\n    \"phone\": \"3119876543\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/adopters/1",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "adopters",
+            "1"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "Actualizar un adoptante",
+          "originalRequest": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Juan David Perez\",\r\n    \"phone\": \"3119876543\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/adopters/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "adopters",
+                "1"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "text",
+          "header": null,
+          "cookie": [],
+          "body": "{\r\n    \"id\": 1,\r\n    \"name\": \"Juan David Perez\",\r\n    \"phone\": \"3119876543\",\r\n    \"adoptions\": []\r\n}"
+        }
+      ]
+    },
+    {
+      "name": "Eliminar un adoptante",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": ""
+        }
+      },
+      "response": [
+        {
+          "name": "Eliminar un adoptante",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": ""
+            }
+          },
+          "_postman_previewlanguage": "json",
+          "header": null,
+          "cookie": [],
+          "body": ""
+        }
+      ]
+    }
+  ]
+}
