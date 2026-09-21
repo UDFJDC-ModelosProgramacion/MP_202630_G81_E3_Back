@@ -18,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class BreedService {
 
-    private static final String ACTION_1 = "action1"; // Compliant
+    private static final String BREED_NOT_FOUND_FOR_THIS_PET = "Breed not found for this pet";
 
     private BreedRepository breedRepository;
     private PetRepository petRepository;
@@ -28,23 +28,6 @@ public class BreedService {
         this.petRepository = petRepository;
     }
 
-    public void run() {
-        prepare(ACTION_1); // Compliant
-        execute(ACTION_1);
-        release(ACTION_1);
-    }
-
-    private void prepare(String action) {
-        // no-op
-    }
-
-    private void execute(String action) {
-        // no-op
-    }
-
-    private void release(String action) {
-        // no-op
-    }
 
     @Transactional
     public BreedEntity createBreed(Long petId, BreedEntity breedEntity)
@@ -69,7 +52,7 @@ public class BreedService {
         log.info("Inicia proceso de consultar la raza de la mascota con id = {0}", petId);
         PetEntity pet = findPetOrThrow(petId);
         if (pet.getBreed() == null)
-            throw new EntityNotFoundException("Breed not found for this pet");
+            throw new EntityNotFoundException(BREED_NOT_FOUND_FOR_THIS_PET);
         return pet.getBreed();
     }
 
@@ -83,7 +66,7 @@ public class BreedService {
 
         PetEntity pet = findPetOrThrow(petId);
         if (pet.getBreed() == null)
-            throw new EntityNotFoundException("Breed not found for this pet");
+            throw new EntityNotFoundException(BREED_NOT_FOUND_FOR_THIS_PET);
 
         if (breedEntity.getPet() != null && !petId.equals(breedEntity.getPet().getId()))
             throw new IllegalOperationException("A breed cannot be reassigned to a different pet");
@@ -100,7 +83,7 @@ public class BreedService {
         log.info("Inicia proceso de borrar la raza de la mascota con id = {0}", petId);
         PetEntity pet = findPetOrThrow(petId);
         if (pet.getBreed() == null)
-            throw new EntityNotFoundException("Breed not found for this pet");
+            throw new EntityNotFoundException(BREED_NOT_FOUND_FOR_THIS_PET);
 
         breedRepository.deleteById(pet.getBreed().getId());
         log.info("Termina proceso de borrar la raza de la mascota con id = {0}", petId);

@@ -5,6 +5,7 @@ import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
 import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
 import co.edu.udistrital.mdp.pets.repositories.AdoptionContractRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,6 +15,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AdoptionContractService {
     private final AdoptionContractRepository contractRepository;
+
+    @Lazy
+    private AdoptionContractService self;
+
     @Transactional
     public AdoptionContractEntity createContract(AdoptionContractEntity contract) throws IllegalOperationException {
         if (contract == null || contract.getTermsAndConditions() == null || contract.getTermsAndConditions().trim().isEmpty()) {
@@ -35,7 +40,7 @@ public class AdoptionContractService {
     }
     @Transactional
     public AdoptionContractEntity updateContract(Long id, AdoptionContractEntity contract) throws EntityNotFoundException, IllegalOperationException {
-        AdoptionContractEntity existing = getContract(id);
+        AdoptionContractEntity existing = self.getContract(id);
         if (contract.getTermsAndConditions() == null || contract.getTermsAndConditions().trim().isEmpty()) {
             throw new IllegalOperationException("Los términos y condiciones no pueden estar vacíos.");
         }
@@ -45,7 +50,7 @@ public class AdoptionContractService {
     }
     @Transactional
     public void deleteContract(Long id) throws EntityNotFoundException {
-        getContract(id);
+        self.getContract(id);
         contractRepository.deleteById(id);
     }
 }
