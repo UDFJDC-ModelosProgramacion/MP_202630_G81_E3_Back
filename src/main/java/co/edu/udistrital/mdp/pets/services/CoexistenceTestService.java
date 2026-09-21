@@ -17,6 +17,8 @@ import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
 @Service
 public class CoexistenceTestService {
 
+    private static final String COEXISTENCE_TEST_NOT_FOUND = "Coexistence test not found";
+
     private CoexistenceTestRepository coexistenceTestRepository;
     public CoexistenceTestService(
             @Autowired CoexistenceTestRepository coexistenceTestRepository) {
@@ -70,7 +72,7 @@ public class CoexistenceTestService {
 
         if (coexistenceTest.isEmpty()) {
             throw new EntityNotFoundException(
-                    "Coexistence test not found");
+                    COEXISTENCE_TEST_NOT_FOUND);
         }
 
         return coexistenceTest.get();
@@ -91,7 +93,7 @@ public class CoexistenceTestService {
 
         if (existing.isEmpty()) {
             throw new EntityNotFoundException(
-                    "Coexistence test not found");
+                    COEXISTENCE_TEST_NOT_FOUND);
         }
 
         if (coexistenceTest.getStartDate() == null) {
@@ -127,7 +129,7 @@ public class CoexistenceTestService {
 
         if (coexistenceTest.isEmpty()) {
             throw new EntityNotFoundException(
-                    "Coexistence test not found");
+                    COEXISTENCE_TEST_NOT_FOUND);
         }
 
         if (coexistenceTest.get().getAdoption() != null) {

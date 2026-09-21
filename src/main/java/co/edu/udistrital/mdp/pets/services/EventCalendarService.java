@@ -20,6 +20,8 @@ import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
 @Service
 public class EventCalendarService {
 
+    private static final String EVENT_CALENDAR_NOT_FOUND = "Event calendar not found";
+
     private EventCalendarRepository eventCalendarRepository;
     private ShelterRepository shelterRepository;
 
@@ -90,7 +92,7 @@ public class EventCalendarService {
 
         if (eventCalendar.isEmpty()) {
             throw new EntityNotFoundException(
-                    "Event calendar not found");
+                    EVENT_CALENDAR_NOT_FOUND);
         }
 
         return eventCalendar.get();
@@ -111,7 +113,7 @@ public class EventCalendarService {
 
         if (existing.isEmpty()) {
             throw new EntityNotFoundException(
-                    "Event calendar not found");
+                    EVENT_CALENDAR_NOT_FOUND);
         }
 
         if (eventCalendar.getType() == null ||
@@ -162,7 +164,7 @@ public class EventCalendarService {
 
         if (eventCalendar.isEmpty()) {
             throw new EntityNotFoundException(
-                    "Event calendar not found");
+                    EVENT_CALENDAR_NOT_FOUND);
         }
 
         eventCalendarRepository.deleteById(eventCalendarId);

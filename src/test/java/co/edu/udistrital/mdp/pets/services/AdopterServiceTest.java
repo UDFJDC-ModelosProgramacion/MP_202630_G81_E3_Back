@@ -2,8 +2,8 @@ package co.edu.udistrital.mdp.pets.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,14 +20,13 @@ import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
 import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
 
 import jakarta.persistence.EntityManager;
-
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 @DataJpaTest
 @Transactional
 @Import(AdopterService.class)
-public class AdopterServiceTest {
+class AdopterServiceTest {
 
     @Autowired
     private AdopterService adopterService;
@@ -124,7 +123,7 @@ public class AdopterServiceTest {
     void deleteAdopter_shouldDeleteAdopter() throws EntityNotFoundException, IllegalOperationException {
         AdopterEntity existing = adopterList.get(0);
         adopterService.deleteAdopter(existing.getId());
-        assertTrue(entityManager.find(AdopterEntity.class, existing.getId()) == null);
+        assertNull(entityManager.find(AdopterEntity.class, existing.getId()) == null);
     }
 
     @Test
