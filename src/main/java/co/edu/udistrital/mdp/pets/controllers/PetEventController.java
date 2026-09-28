@@ -44,7 +44,6 @@ public class PetEventController {
         return modelMapper.map(event, PetEventDTO.class);
     }
 
-    /** Eventos de la mascota; filtro opcional: /pets/{petId}/events?eventType=VACCINATION */
     @GetMapping
     @ResponseStatus(code = HttpStatus.OK)
     public List<PetEventDTO> findAll(@PathVariable Long petId,

@@ -35,7 +35,6 @@ public class PetController {
         this.modelMapper = modelMapper;
     }
 
-    /** Crea una mascota. El body es PetDetailDTO porque debe incluir su evento ARRIVAL inicial. */
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
     public PetDTO create(@RequestBody PetDetailDTO petDetailDTO)
@@ -52,7 +51,6 @@ public class PetController {
         }.getType());
     }
 
-    /** Mascotas disponibles, con filtros opcionales: /pets/available?activityLevel=HIGH&spaceRequirement=LARGE */
     @GetMapping("/available")
     @ResponseStatus(code = HttpStatus.OK)
     public List<PetDTO> findAvailable(@RequestParam(required = false) String activityLevel,

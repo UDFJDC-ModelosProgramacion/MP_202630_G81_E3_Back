@@ -18,7 +18,6 @@ import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
 import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
 import co.edu.udistrital.mdp.pets.services.BreedService;
 
-/** La raza es una asociación 1-1 con la mascota, por eso el recurso vive bajo /pets/{petId}/breed. */
 @RestController
 @RequestMapping("/pets/{petId}/breed")
 public class BreedController {
