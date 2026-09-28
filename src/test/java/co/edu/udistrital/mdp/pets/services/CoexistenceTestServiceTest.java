@@ -28,7 +28,8 @@ import co.edu.udistrital.mdp.pets.repositories.ShelterRepository;
 @Import(CoexistenceTestService.class)
 class CoexistenceTestServiceTest {
 
-    private static final String ACTION_1 = "action1"; // Compliant
+    private static final String APPROVED_RESULT = "Aprobado";
+    private static final String REJECTED_RESULT = "No aprobado";
 
     @Autowired
     private CoexistenceTestService coexistenceTestService;
@@ -60,26 +61,9 @@ class CoexistenceTestServiceTest {
 
         coexistenceTest = new CoexistenceTestEntity();
         coexistenceTest.setStartDate(new Date());
-        coexistenceTest.setResult("Aprobado");
+        coexistenceTest.setResult(APPROVED_RESULT);
     }
 
-    public void run() {
-        prepare(ACTION_1); // Compliant
-        execute(ACTION_1);
-        release(ACTION_1);
-    }
-
-    private void prepare(String action) {
-        // no-op
-    }
-
-    private void execute(String action) {
-        // no-op
-    }
-
-    private void release(String action) {
-        // no-op
-    }
 
     @Test
     void createCoexistenceTestTest() throws Exception {
@@ -89,7 +73,7 @@ class CoexistenceTestServiceTest {
 
         assertNotNull(result.getId());
         assertNotNull(result.getStartDate());
-        assertEquals("Aprobado", result.getResult());
+        assertEquals(APPROVED_RESULT, result.getResult());
     }
 
     @Test
@@ -122,7 +106,7 @@ class CoexistenceTestServiceTest {
                 coexistenceTestService.getCoexistenceTests();
 
         assertEquals(1, result.size());
-        assertEquals("Aprobado", result.get(0).getResult());
+        assertEquals(APPROVED_RESULT, result.get(0).getResult());
     }
 
     @Test
@@ -136,7 +120,7 @@ class CoexistenceTestServiceTest {
                         saved.getId());
 
         assertEquals(saved.getId(), result.getId());
-        assertEquals("Aprobado", result.getResult());
+        assertEquals(APPROVED_RESULT, result.getResult());
     }
 
     @Test
@@ -158,14 +142,14 @@ class CoexistenceTestServiceTest {
                 new CoexistenceTestEntity();
 
         update.setStartDate(new Date());
-        update.setResult("No aprobado");
+        update.setResult(REJECTED_RESULT);
 
         CoexistenceTestEntity result =
                 coexistenceTestService.updateCoexistenceTest(
                         saved.getId(), update);
 
         assertEquals(saved.getId(), result.getId());
-        assertEquals("No aprobado", result.getResult());
+        assertEquals(REJECTED_RESULT, result.getResult());
         assertNotNull(result.getStartDate());
     }
 

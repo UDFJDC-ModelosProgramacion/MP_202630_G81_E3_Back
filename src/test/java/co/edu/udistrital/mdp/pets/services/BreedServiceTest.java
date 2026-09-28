@@ -69,7 +69,6 @@ class BreedServiceTest {
         petList.get(0).setBreed(existingBreed);
     }
 
-    /*  createBreed  */
 
     @Test
     void testCreateBreed() throws EntityNotFoundException, IllegalOperationException {
@@ -94,6 +93,15 @@ class BreedServiceTest {
     }
 
     @Test
+    void testCreateBreedWithBlankName() {
+        assertThrows(IllegalOperationException.class, () -> {
+            BreedEntity newEntity = factory.manufacturePojo(BreedEntity.class);
+            newEntity.setName("   ");
+            breedService.createBreed(petList.get(1).getId(), newEntity);
+        });
+    }
+
+    @Test
     void testCreateBreedWithInvalidPet() {
         assertThrows(EntityNotFoundException.class, () -> {
             BreedEntity newEntity = factory.manufacturePojo(BreedEntity.class);
@@ -108,8 +116,6 @@ class BreedServiceTest {
             breedService.createBreed(petList.get(0).getId(), newEntity);
         });
     }
-
-    /*  getBreed  */
 
     @Test
     void testGetBreed() throws EntityNotFoundException {
@@ -133,8 +139,6 @@ class BreedServiceTest {
         });
     }
 
-    /*  updateBreed  */
-
     @Test
     void testUpdateBreed() throws EntityNotFoundException, IllegalOperationException {
         BreedEntity pojoEntity = factory.manufacturePojo(BreedEntity.class);
@@ -152,6 +156,15 @@ class BreedServiceTest {
         assertThrows(IllegalOperationException.class, () -> {
             BreedEntity pojoEntity = factory.manufacturePojo(BreedEntity.class);
             pojoEntity.setName("");
+            breedService.updateBreed(petList.get(0).getId(), pojoEntity);
+        });
+    }
+
+    @Test
+    void testUpdateBreedWithNullName() {
+        assertThrows(IllegalOperationException.class, () -> {
+            BreedEntity pojoEntity = factory.manufacturePojo(BreedEntity.class);
+            pojoEntity.setName(null);
             breedService.updateBreed(petList.get(0).getId(), pojoEntity);
         });
     }
@@ -184,7 +197,6 @@ class BreedServiceTest {
         });
     }
 
-    /*  deleteBreed */
 
     @Test
     void testDeleteBreed() throws EntityNotFoundException {

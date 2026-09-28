@@ -88,7 +88,6 @@ class PetServiceTest {
         return newEntity;
     }
 
-    /* ===================== createPet ===================== */
 
     @Test
     void testCreatePet() throws EntityNotFoundException, IllegalOperationException {
@@ -114,10 +113,30 @@ class PetServiceTest {
     }
 
     @Test
+    void testCreatePetWithBlankName() {
+        assertThrows(IllegalOperationException.class, () -> {
+            PetEntity newEntity = buildValidNewPet();
+            newEntity.setName("   ");
+            petService.createPet(newEntity);
+        });
+    }
+
+    @Test
     void testCreatePetWithNoValidShelter() {
         assertThrows(IllegalOperationException.class, () -> {
             PetEntity newEntity = buildValidNewPet();
             newEntity.setShelter(null);
+            petService.createPet(newEntity);
+        });
+    }
+
+    @Test
+    void testCreatePetWithShelterWithoutId() {
+        assertThrows(IllegalOperationException.class, () -> {
+            PetEntity newEntity = buildValidNewPet();
+            ShelterEntity shelterEntity = new ShelterEntity();
+            shelterEntity.setId(null);
+            newEntity.setShelter(shelterEntity);
             petService.createPet(newEntity);
         });
     }
@@ -143,10 +162,50 @@ class PetServiceTest {
     }
 
     @Test
+    void testCreatePetWithNullEventsList() {
+        assertThrows(IllegalOperationException.class, () -> {
+            PetEntity newEntity = buildValidNewPet();
+            newEntity.setEvents(null);
+            petService.createPet(newEntity);
+        });
+    }
+
+    @Test
+    void testCreatePetWithMoreThanOneEvent() {
+        assertThrows(IllegalOperationException.class, () -> {
+            PetEntity newEntity = buildValidNewPet();
+            PetEventEntity secondArrival = new PetEventEntity();
+            secondArrival.setEventType("ARRIVAL");
+            secondArrival.setDate(new java.sql.Date(System.currentTimeMillis()));
+            secondArrival.setDescription("Segundo evento de llegada");
+            newEntity.getEvents().add(secondArrival);
+            petService.createPet(newEntity);
+        });
+    }
+
+    @Test
     void testCreatePetWithNonArrivalInitialEvent() {
         assertThrows(IllegalOperationException.class, () -> {
             PetEntity newEntity = buildValidNewPet();
             newEntity.getEvents().get(0).setEventType("SURGERY");
+            petService.createPet(newEntity);
+        });
+    }
+
+    @Test
+    void testCreatePetWithNoValidArrivalDescription() {
+        assertThrows(IllegalOperationException.class, () -> {
+            PetEntity newEntity = buildValidNewPet();
+            newEntity.getEvents().get(0).setDescription(null);
+            petService.createPet(newEntity);
+        });
+    }
+
+    @Test
+    void testCreatePetWithBlankArrivalDescription() {
+        assertThrows(IllegalOperationException.class, () -> {
+            PetEntity newEntity = buildValidNewPet();
+            newEntity.getEvents().get(0).setDescription("   ");
             petService.createPet(newEntity);
         });
     }
@@ -162,6 +221,16 @@ class PetServiceTest {
     }
 
     @Test
+    void testCreatePetBlankStatusGetsDefaultValue() throws EntityNotFoundException, IllegalOperationException {
+        PetEntity newEntity = buildValidNewPet();
+        newEntity.setStatus("   ");
+
+        PetEntity result = petService.createPet(newEntity);
+
+        assertEquals("AVAILABLE", result.getStatus());
+    }
+
+    @Test
     void testCreatePetKeepsGivenStatus() throws EntityNotFoundException, IllegalOperationException {
         PetEntity newEntity = buildValidNewPet();
         newEntity.setStatus("IN_TREATMENT");
@@ -170,8 +239,6 @@ class PetServiceTest {
 
         assertEquals("IN_TREATMENT", result.getStatus());
     }
-
-    /* ===================== getPets / getPet ===================== */
 
     @Test
     void testGetPets() {
@@ -195,8 +262,6 @@ class PetServiceTest {
         });
     }
 
-    /* ===================== getAvailablePetsByFilters ===================== */
-
     @Test
     void testGetAvailablePetsByFilters() {
         PetEntity entity = petList.get(0);
@@ -217,7 +282,58 @@ class PetServiceTest {
         assertTrue(result.stream().noneMatch(p -> p.getId().equals(entity.getId())));
     }
 
-    /* ===================== updatePet ===================== */
+    @Test
+    void testGetAvailablePetsByFiltersSpaceRequirement() {
+        PetEntity entity = petList.get(0);
+        entity.setStatus("AVAILABLE");
+        entity.setSpaceRequirement("LARGE");
+
+        List<PetEntity> result = petService.getAvailablePetsByFilters(null, "LARGE");
+        assertTrue(result.stream().anyMatch(p -> p.getId().equals(entity.getId())));
+    }
+
+    @Test
+    void testGetAvailablePetsByFiltersSpaceRequirementNoMatch() {
+        PetEntity entity = petList.get(0);
+        entity.setStatus("AVAILABLE");
+        entity.setSpaceRequirement("SMALL");
+
+        List<PetEntity> result = petService.getAvailablePetsByFilters(null, "LARGE");
+        assertTrue(result.stream().noneMatch(p -> p.getId().equals(entity.getId())));
+    }
+
+    @Test
+    void testGetAvailablePetsByFiltersActivityLevelAndSpaceRequirement() {
+        PetEntity entity = petList.get(0);
+        entity.setStatus("AVAILABLE");
+        entity.setActivityLevel("HIGH");
+        entity.setSpaceRequirement("LARGE");
+
+        List<PetEntity> result = petService.getAvailablePetsByFilters("HIGH", "LARGE");
+        assertTrue(result.stream().anyMatch(p -> p.getId().equals(entity.getId())));
+    }
+
+    @Test
+    void testGetAvailablePetsByFiltersActivityLevelMatchesButSpaceRequirementDoesNot() {
+        PetEntity entity = petList.get(0);
+        entity.setStatus("AVAILABLE");
+        entity.setActivityLevel("HIGH");
+        entity.setSpaceRequirement("SMALL");
+
+        List<PetEntity> result = petService.getAvailablePetsByFilters("HIGH", "LARGE");
+        assertTrue(result.stream().noneMatch(p -> p.getId().equals(entity.getId())));
+    }
+
+    @Test
+    void testGetAvailablePetsByFiltersExcludesNonAvailableStatus() {
+        PetEntity entity = petList.get(0);
+        entity.setStatus("IN_TREATMENT");
+        entity.setActivityLevel("HIGH");
+
+        List<PetEntity> result = petService.getAvailablePetsByFilters("HIGH", null);
+        assertTrue(result.stream().noneMatch(p -> p.getId().equals(entity.getId())));
+    }
+
 
     @Test
     void testUpdatePet() throws EntityNotFoundException, IllegalOperationException {
@@ -256,6 +372,30 @@ class PetServiceTest {
     }
 
     @Test
+    void testUpdatePetSameShelterWithActiveAdoption()
+            throws EntityNotFoundException, IllegalOperationException {
+        PetEntity entity = petList.get(0);
+
+        AdopterEntity adopterEntity = factory.manufacturePojo(AdopterEntity.class);
+        entityManager.persist(adopterEntity);
+
+        AdoptionEntity adoptionEntity = new AdoptionEntity();
+        adoptionEntity.setAdoptionDate(LocalDate.now());
+        adoptionEntity.setStatus("IN_PROGRESS");
+        adoptionEntity.setPet(entity);
+        adoptionEntity.setAdopter(adopterEntity);
+        entityManager.persist(adoptionEntity);
+
+        PetEntity pojoEntity = factory.manufacturePojo(PetEntity.class);
+        pojoEntity.setId(entity.getId());
+        pojoEntity.setShelter(entity.getShelter());
+
+        PetEntity result = petService.updatePet(entity.getId(), pojoEntity);
+
+        assertEquals(entity.getShelter().getId(), result.getShelter().getId());
+    }
+
+    @Test
     void testUpdatePetShelterWithActiveAdoption() {
         assertThrows(IllegalOperationException.class, () -> {
             PetEntity entity = petList.get(0);
@@ -278,7 +418,6 @@ class PetServiceTest {
         });
     }
 
-    /* ===================== deletePet ===================== */
 
     @Test
     void testDeletePet() throws EntityNotFoundException, IllegalOperationException {
