@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,7 +30,7 @@ public class PetEventController {
     private PetEventService petEventService;
     private ModelMapper modelMapper;
 
-    public PetEventController(PetEventService petEventService, ModelMapper modelMapper) {
+    public PetEventController(@Autowired  PetEventService petEventService,@Autowired  ModelMapper modelMapper) {
         this.petEventService = petEventService;
         this.modelMapper = modelMapper;
     }
