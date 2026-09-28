@@ -22,6 +22,5 @@ public class PetDTO {
     private Boolean compatibleWithOtherPets;
     private String activityLevel;
 
-    // Asociación de cardinalidad 1 (Pet -> Shelter): descomentar cuando ShelterDTO esté en el repo
     // private ShelterDTO shelter;
 }
