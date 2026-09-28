@@ -74,7 +74,6 @@ class PetEventServiceTest {
         entityManager.persist(arrivalEvent);
     }
 
-    /*  createEvent  */
 
     @Test
     void testCreateEvent() throws EntityNotFoundException, IllegalOperationException {
@@ -95,6 +94,15 @@ class PetEventServiceTest {
         assertThrows(IllegalOperationException.class, () -> {
             PetEventEntity newEntity = factory.manufacturePojo(PetEventEntity.class);
             newEntity.setEventType(null);
+            petEventService.createEvent(petList.get(0).getId(), newEntity);
+        });
+    }
+
+    @Test
+    void testCreateEventWithBlankEventType() {
+        assertThrows(IllegalOperationException.class, () -> {
+            PetEventEntity newEntity = factory.manufacturePojo(PetEventEntity.class);
+            newEntity.setEventType("   ");
             petEventService.createEvent(petList.get(0).getId(), newEntity);
         });
     }
@@ -151,7 +159,6 @@ class PetEventServiceTest {
         });
     }
 
-    /*  getEvents / getEventsByType  */
 
     @Test
     void testGetEvents() throws EntityNotFoundException {
@@ -180,7 +187,6 @@ class PetEventServiceTest {
         });
     }
 
-    /*  getEvent  */
 
     @Test
     void testGetEvent() throws EntityNotFoundException, IllegalOperationException {
@@ -203,7 +209,20 @@ class PetEventServiceTest {
         });
     }
 
-    /*  updateEvent  */
+    @Test
+    void testGetEventWithNullPet() {
+        assertThrows(IllegalOperationException.class, () -> {
+            PetEventEntity orphanEvent = new PetEventEntity();
+            orphanEvent.setEventType("ILLNESS");
+            orphanEvent.setDate(new Date(System.currentTimeMillis()));
+            orphanEvent.setDescription("Evento sin mascota asociada");
+            orphanEvent.setPet(null);
+            entityManager.persist(orphanEvent);
+
+            petEventService.getEvent(petList.get(0).getId(), orphanEvent.getId());
+        });
+    }
+
 
     private PetEventEntity persistVaccinationEvent(PetEntity pet, long offsetMillis) {
         PetEventEntity event = new PetEventEntity();
@@ -229,6 +248,45 @@ class PetEventServiceTest {
         PetEventEntity resp = entityManager.find(PetEventEntity.class, newEvent.getId());
         assertEquals("Vacuna antirrábica reprogramada", resp.getDescription());
         assertEquals(petList.get(0).getId(), resp.getPet().getId());
+    }
+
+    @Test
+    void testUpdateEventWithNoValidEventType() {
+        assertThrows(IllegalOperationException.class, () -> {
+            PetEventEntity newEvent = persistVaccinationEvent(petList.get(0), ONE_DAY_MS);
+
+            PetEventEntity pojoEntity = new PetEventEntity();
+            pojoEntity.setEventType(null);
+            pojoEntity.setDate(new Date(System.currentTimeMillis() + 2 * ONE_DAY_MS));
+
+            petEventService.updateEvent(petList.get(0).getId(), newEvent.getId(), pojoEntity);
+        });
+    }
+
+    @Test
+    void testUpdateEventWithBlankEventType() {
+        assertThrows(IllegalOperationException.class, () -> {
+            PetEventEntity newEvent = persistVaccinationEvent(petList.get(0), ONE_DAY_MS);
+
+            PetEventEntity pojoEntity = new PetEventEntity();
+            pojoEntity.setEventType("   ");
+            pojoEntity.setDate(new Date(System.currentTimeMillis() + 2 * ONE_DAY_MS));
+
+            petEventService.updateEvent(petList.get(0).getId(), newEvent.getId(), pojoEntity);
+        });
+    }
+
+    @Test
+    void testUpdateEventWithNoValidDate() {
+        assertThrows(IllegalOperationException.class, () -> {
+            PetEventEntity newEvent = persistVaccinationEvent(petList.get(0), ONE_DAY_MS);
+
+            PetEventEntity pojoEntity = new PetEventEntity();
+            pojoEntity.setEventType("VACCINATION");
+            pojoEntity.setDate(null);
+
+            petEventService.updateEvent(petList.get(0).getId(), newEvent.getId(), pojoEntity);
+        });
     }
 
     @Test
@@ -279,8 +337,6 @@ class PetEventServiceTest {
             petEventService.updateEvent(petList.get(0).getId(), 0L, pojoEntity);
         });
     }
-
-    /*  deleteEvent  */
 
     @Test
     void testDeleteVaccinationNotYetOccurred() throws EntityNotFoundException, IllegalOperationException {
