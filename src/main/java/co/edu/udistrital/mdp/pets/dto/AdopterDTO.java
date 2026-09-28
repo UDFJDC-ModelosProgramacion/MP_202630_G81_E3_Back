@@ -3,10 +3,8 @@ package co.edu.udistrital.mdp.pets.dto;
 import lombok.Data;
 
 @Data
-public class BreedDTO {
-
+public class AdopterDTO {
     private Long id;
     private String name;
-    private String description;
-    private PetDTO pet;
+    private String phone;
 }
