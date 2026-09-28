@@ -9,9 +9,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.ParameterizedTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
@@ -210,34 +214,24 @@ class PetServiceTest {
         });
     }
 
-    @Test
-    void testCreatePetDefaultStatus() throws EntityNotFoundException, IllegalOperationException {
-        PetEntity newEntity = buildValidNewPet();
-        newEntity.setStatus(null);
-
-        PetEntity result = petService.createPet(newEntity);
-
-        assertEquals("AVAILABLE", result.getStatus());
+    private static Stream<Arguments> petStatusCases() {
+        return Stream.of(
+                Arguments.of(null, "AVAILABLE"),
+                Arguments.of("   ", "AVAILABLE"),
+                Arguments.of("IN_TREATMENT", "IN_TREATMENT")
+        );
     }
 
-    @Test
-    void testCreatePetBlankStatusGetsDefaultValue() throws EntityNotFoundException, IllegalOperationException {
+    @ParameterizedTest
+    @MethodSource("petStatusCases")
+    void testCreatePetStatusHandling(String inputStatus, String expectedStatus)
+            throws EntityNotFoundException, IllegalOperationException {
         PetEntity newEntity = buildValidNewPet();
-        newEntity.setStatus("   ");
+        newEntity.setStatus(inputStatus);
 
         PetEntity result = petService.createPet(newEntity);
 
-        assertEquals("AVAILABLE", result.getStatus());
-    }
-
-    @Test
-    void testCreatePetKeepsGivenStatus() throws EntityNotFoundException, IllegalOperationException {
-        PetEntity newEntity = buildValidNewPet();
-        newEntity.setStatus("IN_TREATMENT");
-
-        PetEntity result = petService.createPet(newEntity);
-
-        assertEquals("IN_TREATMENT", result.getStatus());
+        assertEquals(expectedStatus, result.getStatus());
     }
 
     @Test
@@ -409,6 +403,64 @@ class PetServiceTest {
             adoptionEntity.setPet(entity);
             adoptionEntity.setAdopter(adopterEntity);
             entityManager.persist(adoptionEntity);
+
+            PetEntity pojoEntity = factory.manufacturePojo(PetEntity.class);
+            pojoEntity.setId(entity.getId());
+            pojoEntity.setShelter(shelterList.get(1));
+
+            petService.updatePet(entity.getId(), pojoEntity);
+        });
+    }
+
+
+    private void persistAdoption(PetEntity pet, String status) {
+        AdopterEntity adopterEntity = factory.manufacturePojo(AdopterEntity.class);
+        entityManager.persist(adopterEntity);
+
+        AdoptionEntity adoptionEntity = new AdoptionEntity();
+        adoptionEntity.setAdoptionDate(LocalDate.now());
+        adoptionEntity.setStatus(status);
+        adoptionEntity.setPet(pet);
+        adoptionEntity.setAdopter(adopterEntity);
+        entityManager.persist(adoptionEntity);
+    }
+
+    @Test
+    void testUpdatePetWithNullShelterInPayload()
+            throws EntityNotFoundException, IllegalOperationException {
+        PetEntity entity = petList.get(0);
+        persistAdoption(entity, "IN_PROGRESS");
+
+        PetEntity pojoEntity = factory.manufacturePojo(PetEntity.class);
+        pojoEntity.setId(entity.getId());
+        pojoEntity.setShelter(null);
+
+        PetEntity result = petService.updatePet(entity.getId(), pojoEntity);
+
+        assertNotNull(result);
+        assertEquals(entity.getId(), result.getId());
+    }
+
+    @Test
+    void testUpdatePetChangeShelterWithNonActiveAdoption()
+            throws EntityNotFoundException, IllegalOperationException {
+        PetEntity entity = petList.get(0);
+        persistAdoption(entity, "COMPLETED");
+
+        PetEntity pojoEntity = factory.manufacturePojo(PetEntity.class);
+        pojoEntity.setId(entity.getId());
+        pojoEntity.setShelter(shelterList.get(1));
+
+        PetEntity result = petService.updatePet(entity.getId(), pojoEntity);
+
+        assertEquals(shelterList.get(1).getId(), result.getShelter().getId());
+    }
+
+    @Test
+    void testUpdatePetShelterWithCohabitationAdoption() {
+        assertThrows(IllegalOperationException.class, () -> {
+            PetEntity entity = petList.get(0);
+            persistAdoption(entity, "COHABITATION");
 
             PetEntity pojoEntity = factory.manufacturePojo(PetEntity.class);
             pojoEntity.setId(entity.getId());

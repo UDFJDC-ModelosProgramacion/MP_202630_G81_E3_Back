@@ -12,6 +12,5 @@ public class PetEventDTO {
     private Date date;
     private String description;
 
-    // Asociación de cardinalidad 1 (PetEvent -> Pet): va en el DTO, no en el detalle
     private PetDTO pet;
 }

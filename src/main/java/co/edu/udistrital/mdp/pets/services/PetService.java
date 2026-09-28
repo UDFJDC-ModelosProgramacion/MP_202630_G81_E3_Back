@@ -113,7 +113,6 @@ public class PetService {
         PetEntity existing = petEntity.get();
 
         boolean changesShelter = pet.getShelter() != null
-                && existing.getShelter() != null
                 && !existing.getShelter().getId().equals(pet.getShelter().getId());
 
         if (changesShelter && hasActiveAdoption(petId))
