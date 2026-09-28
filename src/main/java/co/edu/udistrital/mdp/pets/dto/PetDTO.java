@@ -21,6 +21,4 @@ public class PetDTO {
     private Boolean compatibleWithChildren;
     private Boolean compatibleWithOtherPets;
     private String activityLevel;
-
-    // private ShelterDTO shelter;
 }

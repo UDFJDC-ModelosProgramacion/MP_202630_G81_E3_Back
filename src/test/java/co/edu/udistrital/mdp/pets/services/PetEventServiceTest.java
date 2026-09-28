@@ -305,6 +305,22 @@ class PetEventServiceTest {
     }
 
     @Test
+    void testUpdateEventWithSamePetInPayload() throws EntityNotFoundException, IllegalOperationException {
+        PetEventEntity newEvent = persistVaccinationEvent(petList.get(0), ONE_DAY_MS);
+
+        PetEventEntity pojoEntity = new PetEventEntity();
+        pojoEntity.setEventType("VACCINATION");
+        pojoEntity.setDate(new Date(System.currentTimeMillis() + 2 * ONE_DAY_MS));
+        pojoEntity.setDescription("Vacuna antirrábica reprogramada");
+        pojoEntity.setPet(petList.get(0));
+
+        PetEventEntity result = petEventService.updateEvent(petList.get(0).getId(), newEvent.getId(), pojoEntity);
+
+        assertEquals(petList.get(0).getId(), result.getPet().getId());
+        assertEquals("Vacuna antirrábica reprogramada", result.getDescription());
+    }
+
+    @Test
     void testUpdateEventNonArrivalAllowed() throws EntityNotFoundException, IllegalOperationException {
         PetEventEntity newEvent = persistVaccinationEvent(petList.get(0), ONE_DAY_MS);
 
