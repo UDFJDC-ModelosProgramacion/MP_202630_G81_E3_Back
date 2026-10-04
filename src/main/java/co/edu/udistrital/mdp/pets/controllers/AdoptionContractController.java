@@ -19,11 +19,13 @@ import java.util.List;
 @RequestMapping("/api/adoption-contracts")
 public class AdoptionContractController {
 
-    @Autowired
     private AdoptionContractService contractService;
-
-    @Autowired
     private ModelMapper modelMapper;
+
+    public AdoptionContractController(@Autowired AdoptionContractService contractService, @Autowired ModelMapper modelMapper) {
+        this.contractService = contractService;
+        this.modelMapper = modelMapper;
+    }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)

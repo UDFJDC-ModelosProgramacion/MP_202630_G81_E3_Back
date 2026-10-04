@@ -19,11 +19,13 @@ import java.util.List;
 @RequestMapping("/api/adoptions")
 public class AdoptionController {
 
-    @Autowired
     private AdoptionService adoptionService;
-
-    @Autowired
     private ModelMapper modelMapper;
+
+    public AdoptionController(@Autowired  AdoptionService adoptionService,@Autowired ModelMapper modelMapper) {
+        this.adoptionService = adoptionService;
+        this.modelMapper = modelMapper;
+    }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)

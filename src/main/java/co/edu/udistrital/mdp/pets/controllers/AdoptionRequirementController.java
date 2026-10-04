@@ -9,7 +9,6 @@ import co.edu.udistrital.mdp.pets.services.AdoptionRequirementService;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,11 +18,13 @@ import java.util.List;
 @RequestMapping("/api/adoption-requirements")
 public class AdoptionRequirementController {
 
-    @Autowired
     private AdoptionRequirementService requirementService;
-
-    @Autowired
     private ModelMapper modelMapper;
+
+    public AdoptionRequirementController(AdoptionRequirementService requirementService, ModelMapper modelMapper) {
+        this.requirementService = requirementService;
+        this.modelMapper = modelMapper;
+    }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
