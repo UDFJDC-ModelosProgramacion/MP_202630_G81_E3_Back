@@ -8,6 +8,236 @@
   },
   "item": [
     {
+      "name": "Preparación: crear un refugio",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/shelters",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "shelters"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"name\": \"Refugio Devoluciones\",\n    \"city\": \"Tunja\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 201\", function () {",
+              "    pm.response.to.have.status(201);",
+              "});",
+              "var data = pm.response.json();",
+              "pm.collectionVariables.set(\"shelter_id_1\", data.id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Preparación: crear una mascota",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/pets",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "pets"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"name\": \"Max\",\n    \"shelter\": {\n        \"id\": {{shelter_id_1}}\n    },\n    \"events\": [\n        {\n            \"eventType\": \"ARRIVAL\",\n            \"date\": \"2026-08-01\",\n            \"description\": \"Entregado por su antiguo dueño\"\n        }\n    ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 201\", function () {",
+              "    pm.response.to.have.status(201);",
+              "});",
+              "var data = pm.response.json();",
+              "pm.collectionVariables.set(\"pet_id_1\", data.id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Preparación: crear un adoptante",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/adopters",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "adopters"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"name\": \"Sofía Rojas\",\n    \"phone\": \"3001234567\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 201\", function () {",
+              "    pm.response.to.have.status(201);",
+              "});",
+              "var data = pm.response.json();",
+              "pm.collectionVariables.set(\"adopter_id_1\", data.id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Preparación: crear una adopción",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/adoptions",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "adoptions"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"adoptionDate\": \"2026-09-01\",\n    \"status\": \"APPROVED\",\n    \"pet\": {\n        \"id\": {{pet_id_1}}\n    },\n    \"adopter\": {\n        \"id\": {{adopter_id_1}}\n    }\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 201\", function () {",
+              "    pm.response.to.have.status(201);",
+              "});",
+              "var data = pm.response.json();",
+              "pm.collectionVariables.set(\"adoption_id_1\", data.id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Preparación: crear una adopción sin devolución",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/adoptions",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "adoptions"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"adoptionDate\": \"2026-09-10\",\n    \"status\": \"APPROVED\",\n    \"pet\": {\n        \"id\": {{pet_id_1}}\n    },\n    \"adopter\": {\n        \"id\": {{adopter_id_1}}\n    }\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 201\", function () {",
+              "    pm.response.to.have.status(201);",
+              "});",
+              "var data = pm.response.json();",
+              "pm.collectionVariables.set(\"adoption_id_no_devolution\", data.id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
       "name": "Crear la devolución de una adopción",
       "request": {
         "method": "POST",
@@ -82,6 +312,23 @@
           ],
           "cookie": [],
           "body": "{\n    \"id\": 1,\n    \"date\": \"2026-09-15\",\n    \"reason\": \"El adoptante no pudo continuar con los cuidados de la mascota.\"\n}"
+        }
+      ],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 201\", function () {",
+              "    pm.response.to.have.status(201);",
+              "});",
+              "pm.test(\"reason is correct\", function () {",
+              "    var data = pm.response.json();",
+              "    pm.expect(data.reason).to.eql(\"El adoptante no pudo continuar con los cuidados de la mascota.\");",
+              "});"
+            ]
+          }
         }
       ]
     },
@@ -161,6 +408,23 @@
           "cookie": [],
           "body": "{\n    \"apierror\": {\n        \"status\": \"NOT_FOUND\",\n        \"timestamp\": \"20-09-2026 11:08:41\",\n        \"message\": \"Adopción no encontrada\"\n    }\n}"
         }
+      ],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 404\", function () {",
+              "    pm.response.to.have.status(404);",
+              "});",
+              "pm.test(\"Error message is correct\", function () {",
+              "    var data = pm.response.json();",
+              "    pm.expect(data.apierror.message).to.eql(\"Adopción no encontrada\");",
+              "});"
+            ]
+          }
+        }
       ]
     },
     {
@@ -238,6 +502,23 @@
           ],
           "cookie": [],
           "body": "{\n    \"apierror\": {\n        \"status\": \"PRECONDITION_FAILED\",\n        \"timestamp\": \"20-09-2026 11:08:53\",\n        \"message\": \"La razón de la devolución no es válida\"\n    }\n}"
+        }
+      ],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 412\", function () {",
+              "    pm.response.to.have.status(412);",
+              "});",
+              "pm.test(\"Error message is correct\", function () {",
+              "    var data = pm.response.json();",
+              "    pm.expect(data.apierror.message).to.eql(\"La razón de la devolución no es válida\");",
+              "});"
+            ]
+          }
         }
       ]
     },
@@ -317,6 +598,23 @@
           "cookie": [],
           "body": "{\n    \"apierror\": {\n        \"status\": \"PRECONDITION_FAILED\",\n        \"timestamp\": \"20-09-2026 11:09:05\",\n        \"message\": \"La fecha de la devolución no es válida\"\n    }\n}"
         }
+      ],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 412\", function () {",
+              "    pm.response.to.have.status(412);",
+              "});",
+              "pm.test(\"Error message is correct\", function () {",
+              "    var data = pm.response.json();",
+              "    pm.expect(data.apierror.message).to.eql(\"La fecha de la devolución no es válida\");",
+              "});"
+            ]
+          }
+        }
       ]
     },
     {
@@ -394,6 +692,23 @@
           ],
           "cookie": [],
           "body": "{\n    \"apierror\": {\n        \"status\": \"PRECONDITION_FAILED\",\n        \"timestamp\": \"20-09-2026 11:09:17\",\n        \"message\": \"La fecha de la devolución no puede ser anterior a la fecha de la adopción\"\n    }\n}"
+        }
+      ],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 412\", function () {",
+              "    pm.response.to.have.status(412);",
+              "});",
+              "pm.test(\"Error message is correct\", function () {",
+              "    var data = pm.response.json();",
+              "    pm.expect(data.apierror.message).to.eql(\"La fecha de la devolución no puede ser anterior a la fecha de la adopción\");",
+              "});"
+            ]
+          }
         }
       ]
     },
@@ -473,6 +788,58 @@
           "cookie": [],
           "body": "{\n    \"apierror\": {\n        \"status\": \"PRECONDITION_FAILED\",\n        \"timestamp\": \"20-09-2026 11:09:29\",\n        \"message\": \"La adopción ya tiene una devolución registrada\"\n    }\n}"
         }
+      ],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 412\", function () {",
+              "    pm.response.to.have.status(412);",
+              "});",
+              "pm.test(\"Error message is correct\", function () {",
+              "    var data = pm.response.json();",
+              "    pm.expect(data.apierror.message).to.eql(\"La adopción ya tiene una devolución registrada\");",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Obtener todas las devoluciones",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/devolutions",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "devolutions"
+          ]
+        },
+        "description": "Lista todas las devoluciones registradas."
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "pm.test(\"Number of items > 0\", function () {",
+              "    var data = pm.response.json();",
+              "    pm.expect(data.length).to.greaterThan(0);",
+              "});"
+            ]
+          }
+        }
       ]
     },
     {
@@ -522,6 +889,23 @@
           ],
           "cookie": [],
           "body": "{\n    \"id\": 1,\n    \"date\": \"2026-09-15\",\n    \"reason\": \"El adoptante no pudo continuar con los cuidados de la mascota.\"\n}"
+        }
+      ],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "pm.test(\"date is correct\", function () {",
+              "    var data = pm.response.json();",
+              "    pm.expect(data.date).to.eql(\"2026-09-15\");",
+              "});"
+            ]
+          }
         }
       ]
     },
@@ -573,6 +957,23 @@
           "cookie": [],
           "body": "{\n    \"apierror\": {\n        \"status\": \"NOT_FOUND\",\n        \"timestamp\": \"20-09-2026 11:09:41\",\n        \"message\": \"Adopción no encontrada\"\n    }\n}"
         }
+      ],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 404\", function () {",
+              "    pm.response.to.have.status(404);",
+              "});",
+              "pm.test(\"Error message is correct\", function () {",
+              "    var data = pm.response.json();",
+              "    pm.expect(data.apierror.message).to.eql(\"Adopción no encontrada\");",
+              "});"
+            ]
+          }
+        }
       ]
     },
     {
@@ -622,6 +1023,23 @@
           ],
           "cookie": [],
           "body": "{\n    \"apierror\": {\n        \"status\": \"NOT_FOUND\",\n        \"timestamp\": \"20-09-2026 11:09:53\",\n        \"message\": \"Devolución no encontrada para esta adopción\"\n    }\n}"
+        }
+      ],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 404\", function () {",
+              "    pm.response.to.have.status(404);",
+              "});",
+              "pm.test(\"Error message is correct\", function () {",
+              "    var data = pm.response.json();",
+              "    pm.expect(data.apierror.message).to.eql(\"Devolución no encontrada para esta adopción\");",
+              "});"
+            ]
+          }
         }
       ]
     },
@@ -701,6 +1119,23 @@
           "cookie": [],
           "body": "{\n    \"id\": 1,\n    \"date\": \"2026-09-15\",\n    \"reason\": \"El adoptante cambió de ciudad y no puede llevar consigo a la mascota.\"\n}"
         }
+      ],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "pm.test(\"reason is correct\", function () {",
+              "    var data = pm.response.json();",
+              "    pm.expect(data.reason).to.eql(\"El adoptante cambió de ciudad y no puede llevar consigo a la mascota.\");",
+              "});"
+            ]
+          }
+        }
       ]
     },
     {
@@ -778,6 +1213,23 @@
           ],
           "cookie": [],
           "body": "{\n    \"apierror\": {\n        \"status\": \"NOT_FOUND\",\n        \"timestamp\": \"20-09-2026 11:10:05\",\n        \"message\": \"Adopción no encontrada\"\n    }\n}"
+        }
+      ],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 404\", function () {",
+              "    pm.response.to.have.status(404);",
+              "});",
+              "pm.test(\"Error message is correct\", function () {",
+              "    var data = pm.response.json();",
+              "    pm.expect(data.apierror.message).to.eql(\"Adopción no encontrada\");",
+              "});"
+            ]
+          }
         }
       ]
     },
@@ -857,6 +1309,23 @@
           "cookie": [],
           "body": "{\n    \"apierror\": {\n        \"status\": \"NOT_FOUND\",\n        \"timestamp\": \"20-09-2026 11:10:17\",\n        \"message\": \"Devolución no encontrada para esta adopción\"\n    }\n}"
         }
+      ],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 404\", function () {",
+              "    pm.response.to.have.status(404);",
+              "});",
+              "pm.test(\"Error message is correct\", function () {",
+              "    var data = pm.response.json();",
+              "    pm.expect(data.apierror.message).to.eql(\"Devolución no encontrada para esta adopción\");",
+              "});"
+            ]
+          }
+        }
       ]
     },
     {
@@ -934,6 +1403,23 @@
           ],
           "cookie": [],
           "body": "{\n    \"apierror\": {\n        \"status\": \"PRECONDITION_FAILED\",\n        \"timestamp\": \"20-09-2026 11:10:29\",\n        \"message\": \"La razón de la devolución no es válida\"\n    }\n}"
+        }
+      ],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 412\", function () {",
+              "    pm.response.to.have.status(412);",
+              "});",
+              "pm.test(\"Error message is correct\", function () {",
+              "    var data = pm.response.json();",
+              "    pm.expect(data.apierror.message).to.eql(\"La razón de la devolución no es válida\");",
+              "});"
+            ]
+          }
         }
       ]
     },
@@ -1013,6 +1499,23 @@
           "cookie": [],
           "body": "{\n    \"apierror\": {\n        \"status\": \"PRECONDITION_FAILED\",\n        \"timestamp\": \"20-09-2026 11:10:41\",\n        \"message\": \"La fecha de la devolución no es válida\"\n    }\n}"
         }
+      ],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 412\", function () {",
+              "    pm.response.to.have.status(412);",
+              "});",
+              "pm.test(\"Error message is correct\", function () {",
+              "    var data = pm.response.json();",
+              "    pm.expect(data.apierror.message).to.eql(\"La fecha de la devolución no es válida\");",
+              "});"
+            ]
+          }
+        }
       ]
     },
     {
@@ -1091,6 +1594,23 @@
           "cookie": [],
           "body": "{\n    \"apierror\": {\n        \"status\": \"PRECONDITION_FAILED\",\n        \"timestamp\": \"20-09-2026 11:10:53\",\n        \"message\": \"Una devolución no puede ser reasignada a una adopción diferente\"\n    }\n}"
         }
+      ],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 412\", function () {",
+              "    pm.response.to.have.status(412);",
+              "});",
+              "pm.test(\"Error message is correct\", function () {",
+              "    var data = pm.response.json();",
+              "    pm.expect(data.apierror.message).to.eql(\"Una devolución no puede ser reasignada a una adopción diferente\");",
+              "});"
+            ]
+          }
+        }
       ]
     },
     {
@@ -1135,6 +1655,19 @@
           "header": [],
           "cookie": [],
           "body": ""
+        }
+      ],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 204\", function () {",
+              "    pm.response.to.have.status(204);",
+              "});"
+            ]
+          }
         }
       ]
     },
@@ -1186,6 +1719,23 @@
           "cookie": [],
           "body": "{\n    \"apierror\": {\n        \"status\": \"NOT_FOUND\",\n        \"timestamp\": \"20-09-2026 11:11:05\",\n        \"message\": \"Adopción no encontrada\"\n    }\n}"
         }
+      ],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 404\", function () {",
+              "    pm.response.to.have.status(404);",
+              "});",
+              "pm.test(\"Error message is correct\", function () {",
+              "    var data = pm.response.json();",
+              "    pm.expect(data.apierror.message).to.eql(\"Adopción no encontrada\");",
+              "});"
+            ]
+          }
+        }
       ]
     },
     {
@@ -1236,6 +1786,178 @@
           "cookie": [],
           "body": "{\n    \"apierror\": {\n        \"status\": \"NOT_FOUND\",\n        \"timestamp\": \"20-09-2026 11:11:17\",\n        \"message\": \"Devolución no encontrada para esta adopción\"\n    }\n}"
         }
+      ],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 404\", function () {",
+              "    pm.response.to.have.status(404);",
+              "});",
+              "pm.test(\"Error message is correct\", function () {",
+              "    var data = pm.response.json();",
+              "    pm.expect(data.apierror.message).to.eql(\"Devolución no encontrada para esta adopción\");",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Limpieza: borrar la adopción",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/adoptions/{{adoption_id_1}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "adoptions",
+            "{{adoption_id_1}}"
+          ]
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 204\", function () {",
+              "    pm.response.to.have.status(204);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Limpieza: borrar la adopción sin devolución",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/adoptions/{{adoption_id_no_devolution}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "adoptions",
+            "{{adoption_id_no_devolution}}"
+          ]
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 204\", function () {",
+              "    pm.response.to.have.status(204);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Limpieza: borrar la mascota",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/pets/{{pet_id_1}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "pets",
+            "{{pet_id_1}}"
+          ]
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 204\", function () {",
+              "    pm.response.to.have.status(204);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Limpieza: borrar el adoptante",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/adopters/{{adopter_id_1}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "adopters",
+            "{{adopter_id_1}}"
+          ]
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 204\", function () {",
+              "    pm.response.to.have.status(204);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Limpieza: borrar el refugio",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/shelters/{{shelter_id_1}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "shelters",
+            "{{shelter_id_1}}"
+          ]
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 204\", function () {",
+              "    pm.response.to.have.status(204);",
+              "});"
+            ]
+          }
+        }
       ]
     }
   ],
@@ -1247,6 +1969,18 @@
     {
       "key": "adoption_id_no_devolution",
       "value": "2"
+    },
+    {
+      "key": "shelter_id_1",
+      "value": "1"
+    },
+    {
+      "key": "pet_id_1",
+      "value": "1"
+    },
+    {
+      "key": "adopter_id_1",
+      "value": "1"
     }
   ]
 }
