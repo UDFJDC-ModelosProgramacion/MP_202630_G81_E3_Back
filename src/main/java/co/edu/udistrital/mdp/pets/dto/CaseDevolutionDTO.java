@@ -9,4 +9,5 @@ public class CaseDevolutionDTO {
     private Long id;
     private LocalDate date;
     private String reason;
+    private AdoptionDTO adoption;
 }
