@@ -3,8 +3,9 @@ package co.edu.udistrital.mdp.pets.dto;
 import lombok.Data;
 
 @Data
-public class ShelterDTO {
+public class ShelterAdministratorDTO {
     private Long id;
     private String name;
-    private String city;
+    private String email;
+    private String role;
 }
