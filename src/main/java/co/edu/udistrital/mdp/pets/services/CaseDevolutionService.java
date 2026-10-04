@@ -1,4 +1,5 @@
 package co.edu.udistrital.mdp.pets.services;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,6 +47,12 @@ public class CaseDevolutionService {
 
         log.info("Termina proceso de creación de la devolución para la adopción con id = {0}", adoptionId);
         return caseDevolutionRepository.save(caseDevolutionEntity);
+    }
+
+    @Transactional
+    public List<CaseDevolutionEntity> getCaseDevolutions() {
+        log.info("Inicia proceso de consultar todas las devoluciones");
+        return caseDevolutionRepository.findAll();
     }
 
     @Transactional
