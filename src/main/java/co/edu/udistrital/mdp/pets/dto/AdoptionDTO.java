@@ -9,4 +9,5 @@ public class AdoptionDTO {
     private Long id;
     private LocalDate adoptionDate;
     private String status;
+    private PetDTO pet;
 }
