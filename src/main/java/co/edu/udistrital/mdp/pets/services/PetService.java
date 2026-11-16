@@ -112,6 +112,20 @@ public class PetService {
 
         PetEntity existing = petEntity.get();
 
+        if (pet.getName() == null || pet.getName().isBlank())
+            throw new IllegalOperationException("Name is not valid");
+
+        // El refugio es obligatorio en la base de datos: si no se envía se conserva el actual y,
+        // si se envía, debe existir (se usa la entidad gestionada y no el objeto del DTO).
+        if (pet.getShelter() == null || pet.getShelter().getId() == null) {
+            pet.setShelter(existing.getShelter());
+        } else {
+            Optional<ShelterEntity> shelterEntity = shelterRepository.findById(pet.getShelter().getId());
+            if (shelterEntity.isEmpty())
+                throw new EntityNotFoundException("Shelter not found");
+            pet.setShelter(shelterEntity.get());
+        }
+
         boolean changesShelter = pet.getShelter() != null
                 && !existing.getShelter().getId().equals(pet.getShelter().getId());
 
