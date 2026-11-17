@@ -2,9 +2,11 @@ package co.edu.udistrital.mdp.pets.controllers;
 
 import co.edu.udistrital.mdp.pets.dto.AdoptionDTO;
 import co.edu.udistrital.mdp.pets.dto.AdoptionDetailDTO;
+import co.edu.udistrital.mdp.pets.dto.AdoptionRequirementDTO;
 import co.edu.udistrital.mdp.pets.entities.AdoptionEntity;
 import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
 import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
+import co.edu.udistrital.mdp.pets.services.AdoptionRequirementService;
 import co.edu.udistrital.mdp.pets.services.AdoptionService;
 
 import org.modelmapper.ModelMapper;
@@ -16,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/adoptions")
+@RequestMapping("/adoptions")
 public class AdoptionController {
 
     @Autowired
@@ -25,18 +27,31 @@ public class AdoptionController {
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private AdoptionRequirementService requirementService;
+
+    /** Detalle de la adopción con los requisitos que aplican a su mascota. */
+    private AdoptionDetailDTO toDetail(AdoptionEntity entity) {
+        AdoptionDetailDTO dto = modelMapper.map(entity, AdoptionDetailDTO.class);
+        if (entity.getPet() != null) {
+            List<AdoptionRequirementDTO> requirements = modelMapper.map(
+                    requirementService.getRequirementsByPet(entity.getPet().getId()),
+                    new TypeToken<List<AdoptionRequirementDTO>>() {}.getType());
+            dto.setRequirements(requirements);
+        }
+        return dto;
+    }
+
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<AdoptionDetailDTO> findAll() {
-        List<AdoptionEntity> adoptions = adoptionService.getAdoptions();
-        return modelMapper.map(adoptions, new TypeToken<List<AdoptionDetailDTO>>() {}.getType());
+        return adoptionService.getAdoptions().stream().map(this::toDetail).toList();
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public AdoptionDetailDTO findOne(@PathVariable Long id) throws EntityNotFoundException {
-        AdoptionEntity entity = adoptionService.getAdoption(id);
-        return modelMapper.map(entity, AdoptionDetailDTO.class);
+        return toDetail(adoptionService.getAdoption(id));
     }
 
     @PostMapping

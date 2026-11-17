@@ -10,4 +10,5 @@ public class AdoptionDTO {
     private LocalDate adoptionDate;
     private String status;
     private PetDTO pet;
+    private AdopterDTO adopter;
 }
