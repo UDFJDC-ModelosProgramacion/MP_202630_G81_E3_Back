@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/adoption-requirements")
+@RequestMapping("/adoption-requirements")
 public class AdoptionRequirementController {
 
     private AdoptionRequirementService requirementService;

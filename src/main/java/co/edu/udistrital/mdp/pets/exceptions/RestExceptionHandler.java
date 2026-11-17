@@ -1,5 +1,6 @@
 package co.edu.udistrital.mdp.pets.exceptions;
 
+import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.PRECONDITION_FAILED;
 
@@ -39,6 +40,21 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleIllegalOperation(
             IllegalOperationException ex) {
         ApiError apiError = new ApiError(PRECONDITION_FAILED);
+        apiError.setMessage(ex.getMessage());
+        return buildResponseEntity(apiError);
+    }
+
+    /**
+     * Handles ForbiddenOperationException: el usuario no tiene permiso sobre el recurso.
+     * La respuesta no incluye datos del recurso, solo el mensaje.
+     *
+     * @param ex the ForbiddenOperationException
+     * @return the ApiError object
+     */
+    @ExceptionHandler(ForbiddenOperationException.class)
+    protected ResponseEntity<Object> handleForbiddenOperation(
+            ForbiddenOperationException ex) {
+        ApiError apiError = new ApiError(FORBIDDEN);
         apiError.setMessage(ex.getMessage());
         return buildResponseEntity(apiError);
     }

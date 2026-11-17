@@ -9,6 +9,5 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class ShelterAdministratorDetailDTO extends ShelterAdministratorDTO {
-
     private List<ShelterDTO> shelters = new ArrayList<>();
 }

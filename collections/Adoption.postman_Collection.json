@@ -102,7 +102,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"date\": \"2026-03-15\",\n  \"status\": \"IN_PROGRESS\"\n}"
+              "raw": "{\n  \"adoptionDate\": \"2026-03-15\",\n  \"status\": \"IN_PROGRESS\",\n  \"adopter\": { \"id\": 1 },\n  \"pet\": { \"id\": 1 }\n}"
             },
             "url": {
               "raw": "{{baseUrl}}/adoptions",
@@ -136,7 +136,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"id\": 1,\n  \"date\": \"2026-03-20\",\n  \"status\": \"APPROVED\"\n}"
+              "raw": "{\n  \"id\": 1,\n  \"adoptionDate\": \"2026-03-20\",\n  \"status\": \"APPROVED\"\n}"
             },
             "url": {
               "raw": "{{baseUrl}}/adoptions/:id",
@@ -268,7 +268,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"termsAndConditions\": \"El adoptante se compromete a brindar alimento y espacio adecuado.\",\n  \"signedDate\": \"2026-03-16\",\n  \"isSigned\": true\n}"
+              "raw": "{\n  \"termsAndConditions\": \"El adoptante se compromete a brindar alimento y espacio adecuado.\",\n  \"signedDate\": \"2026-03-16\",\n  \"status\": \"SIGNED\"\n}"
             },
             "url": {
               "raw": "{{baseUrl}}/adoption-contracts",
@@ -302,7 +302,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"id\": 1,\n  \"termsAndConditions\": \"Términos y condiciones actualizados.\",\n  \"signedDate\": \"2026-03-16\",\n  \"isSigned\": true\n}"
+              "raw": "{\n  \"id\": 1,\n  \"termsAndConditions\": \"Términos y condiciones actualizados.\",\n  \"signedDate\": \"2026-03-16\",\n  \"status\": \"SIGNED\"\n}"
             },
             "url": {
               "raw": "{{baseUrl}}/adoption-contracts/:id",
@@ -434,7 +434,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"description\": \"Tener casa propia con patio cerrado.\",\n  \"isMandatory\": true,\n  \"isFulfilled\": false\n}"
+              "raw": "{\n  \"description\": \"Tener casa propia con patio cerrado.\",\n  \"mandatory\": true\n}"
             },
             "url": {
               "raw": "{{baseUrl}}/adoption-requirements",
@@ -468,7 +468,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"id\": 1,\n  \"description\": \"Tener casa propia o autorización del arrendador.\",\n  \"isMandatory\": true,\n  \"isFulfilled\": true\n}"
+              "raw": "{\n  \"id\": 1,\n  \"description\": \"Tener casa propia o autorización del arrendador.\",\n  \"mandatory\": true\n}"
             },
             "url": {
               "raw": "{{baseUrl}}/adoption-requirements/:id",
@@ -575,7 +575,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"termsAndConditions\": \"Contrato asociado a la adopción.\",\n  \"signedDate\": \"2026-03-16\",\n  \"isSigned\": true\n}"
+              "raw": "{\n  \"termsAndConditions\": \"Contrato asociado a la adopción.\",\n  \"signedDate\": \"2026-03-16\",\n  \"status\": \"SIGNED\"\n}"
             },
             "url": {
               "raw": "{{baseUrl}}/adoptions/:adoptionId/contract",
