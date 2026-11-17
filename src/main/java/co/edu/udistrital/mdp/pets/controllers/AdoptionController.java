@@ -21,10 +21,7 @@ import java.util.List;
 @RequestMapping("/adoptions")
 public class AdoptionController {
 
-    @Autowired
     private AdoptionService adoptionService;
-
-    @Autowired
     private ModelMapper modelMapper;
 
     @Autowired
