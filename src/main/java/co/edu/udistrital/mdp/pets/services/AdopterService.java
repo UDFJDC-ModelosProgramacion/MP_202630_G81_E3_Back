@@ -57,8 +57,10 @@ public class AdopterService {
         if (adopterEntity.getPhone() == null || adopterEntity.getPhone().isBlank())
             throw new IllegalOperationException("Phone is not valid");
 
-        findAdopterOrThrow(adopterId);
+        AdopterEntity existing = findAdopterOrThrow(adopterId);
         adopterEntity.setId(adopterId);
+        // Las adopciones no vienen en el cuerpo: se conservan para no borrarlas por orphanRemoval.
+        adopterEntity.setAdoptions(existing.getAdoptions());
 
         log.info("Termina proceso de actualizar el adoptante con id = {0}", adopterId);
         return adopterRepository.save(adopterEntity);

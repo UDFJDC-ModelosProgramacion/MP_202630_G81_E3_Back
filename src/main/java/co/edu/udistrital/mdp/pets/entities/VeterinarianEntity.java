@@ -21,6 +21,11 @@ public class VeterinarianEntity extends BaseEntity {
 
     private String name;
     private String speciality;
+    private String email;
+    private String phone;
+
+    /** Disponibilidad horaria en texto libre (por ejemplo, "Lunes a viernes 8:00-12:00"). */
+    private String availability;
 
     /** Edad en años (18 a 100). */
     private Integer age;

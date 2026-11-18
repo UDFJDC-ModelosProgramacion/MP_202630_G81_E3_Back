@@ -17,6 +17,8 @@ import uk.co.jemos.podam.common.PodamExclude;
 public class CoexistenceTestEntity extends BaseEntity {
 
     private Date startDate;
+    /** Fin del periodo de convivencia acordado. */
+    private Date endDate;
     private String result;
 
     @PodamExclude

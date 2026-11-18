@@ -52,6 +52,11 @@ public class CaseDevolutionService {
         caseDevolutionEntity.setAdoption(adoption);
         makePetAvailable(adoption.getPet());
 
+        // La mascota vuelve a estar disponible y su historial conserva la adopción devuelta.
+        adoption.setStatus("RETURNED");
+        if (adoption.getPet() != null)
+            adoption.getPet().setStatus("AVAILABLE");
+
         log.info("Termina proceso de creación de la devolución para la adopción con id = {0}", adoptionId);
         return caseDevolutionRepository.save(caseDevolutionEntity);
     }

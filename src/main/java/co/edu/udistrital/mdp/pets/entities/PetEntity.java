@@ -21,6 +21,9 @@ public class PetEntity extends BaseEntity {
 
     private String name;
 
+    /** Especie (perro, gato, etc.); la raza se registra aparte en {@link BreedEntity}. */
+    private String species;
+
     private String status;
 
     private Integer age;
@@ -58,4 +61,9 @@ public class PetEntity extends BaseEntity {
     @PodamExclude
     @OneToOne(mappedBy = "pet", cascade = CascadeType.ALL, orphanRemoval = true)
     private BreedEntity breed;
+
+    /** Carné de vacunación digital de la mascota. */
+    @PodamExclude
+    @OneToMany(mappedBy = "pet", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<VaccinationEntity> vaccinations = new ArrayList<>();
 }

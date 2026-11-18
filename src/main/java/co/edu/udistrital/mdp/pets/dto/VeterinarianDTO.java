@@ -8,9 +8,7 @@ public class VeterinarianDTO {
     private Long id;
     private String name;
     private String speciality;
-    private Integer age;
-    private String gender;
-
-    /** Solo lectura: false mientras acompaña una adopción activa. */
-    private Boolean available;
+    private String email;
+    private String phone;
+    private String availability;
 }

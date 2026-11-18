@@ -1,6 +1,7 @@
 package co.edu.udistrital.mdp.pets.controllers;
 
 import java.util.List;
+import java.util.Map;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -54,8 +55,15 @@ public class PetController {
     @GetMapping("/available")
     @ResponseStatus(code = HttpStatus.OK)
     public List<PetDTO> findAvailable(@RequestParam(required = false) String activityLevel,
-            @RequestParam(required = false) String spaceRequirement) {
-        List<PetEntity> pets = petService.getAvailablePetsByFilters(activityLevel, spaceRequirement);
+            @RequestParam(required = false) String spaceRequirement,
+            @RequestParam(required = false) String species,
+            @RequestParam(required = false) Integer minAge,
+            @RequestParam(required = false) Integer maxAge,
+            @RequestParam(required = false) String size,
+            @RequestParam(required = false) Boolean compatibleWithChildren,
+            @RequestParam(required = false) Boolean compatibleWithOtherPets) {
+        List<PetEntity> pets = petService.getAvailablePetsByFilters(activityLevel, spaceRequirement, species,
+                minAge, maxAge, size, compatibleWithChildren, compatibleWithOtherPets);
         return modelMapper.map(pets, new TypeToken<List<PetDTO>>() {
         }.getType());
     }
@@ -72,6 +80,15 @@ public class PetController {
     public PetDTO update(@PathVariable Long id, @RequestBody PetDTO petDTO)
             throws EntityNotFoundException, IllegalOperationException {
         PetEntity petEntity = petService.updatePet(id, modelMapper.map(petDTO, PetEntity.class));
+        return modelMapper.map(petEntity, PetDTO.class);
+    }
+
+    /** Agrega una foto al perfil: cuerpo `{ "url": "https://..." }`. */
+    @PostMapping("/{id}/photos")
+    @ResponseStatus(code = HttpStatus.CREATED)
+    public PetDTO addPhoto(@PathVariable Long id, @RequestBody Map<String, String> body)
+            throws EntityNotFoundException, IllegalOperationException {
+        PetEntity petEntity = petService.addPhoto(id, body == null ? null : body.get("url"));
         return modelMapper.map(petEntity, PetDTO.class);
     }
 

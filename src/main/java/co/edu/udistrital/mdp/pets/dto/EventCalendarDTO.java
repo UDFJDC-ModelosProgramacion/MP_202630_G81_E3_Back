@@ -9,5 +9,7 @@ public class EventCalendarDTO {
 
     private Long id;
     private String type;
+    private String title;
+    private String description;
     private Date date;
 }

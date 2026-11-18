@@ -15,6 +15,9 @@ public class ReviewEntity extends BaseEntity {
     private String comments;
     private String score;
 
+    /** Indica que la reseña cuenta la historia de una adopción exitosa. */
+    private Boolean successStory = Boolean.FALSE;
+
     @PodamExclude
     @ManyToOne
     private AdoptionEntity adoption;

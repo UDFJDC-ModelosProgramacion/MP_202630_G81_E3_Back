@@ -13,4 +13,6 @@ public class PetDetailDTO extends PetDTO {
     private List<PetEventDTO> events = new ArrayList<>();
 
     private BreedDTO breed;
+
+    private List<VaccinationDTO> vaccinations = new ArrayList<>();
 }
