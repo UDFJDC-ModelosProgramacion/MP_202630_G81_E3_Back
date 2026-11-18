@@ -10,4 +10,6 @@ public interface MedicalRecordRepository extends JpaRepository<MedicalRecordEnti
 
     /** Historial médico de una mascota, del más reciente al más antiguo. */
     List<MedicalRecordEntity> findByPetIdOrderByDateDescIdDesc(Long petId);
+
+    List<MedicalRecordEntity> findByPetShelterId(Long shelterId);
 }

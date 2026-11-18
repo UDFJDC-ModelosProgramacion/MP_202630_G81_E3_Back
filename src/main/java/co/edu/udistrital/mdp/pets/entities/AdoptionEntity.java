@@ -45,6 +45,12 @@ public class AdoptionEntity extends BaseEntity {
     @JoinColumn(name = "coexistence_test_id", referencedColumnName = "id")
     private CoexistenceTestEntity coexistenceTest;
 
+    /** Veterinario del refugio responsable del seguimiento posadopción. */
+    @PodamExclude
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "veterinarian_id")
+    private VeterinarianEntity veterinarian;
+
     @Transient
     private Object strategy;
 }

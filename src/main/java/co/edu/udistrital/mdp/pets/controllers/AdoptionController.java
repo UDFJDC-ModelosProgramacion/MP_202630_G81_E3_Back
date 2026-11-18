@@ -70,6 +70,14 @@ public class AdoptionController {
         return modelMapper.map(updatedEntity, AdoptionDTO.class);
     }
 
+    /** Asigna al veterinario responsable del seguimiento posadopción. */
+    @PutMapping("/{id}/veterinarian/{veterinarianId}")
+    @ResponseStatus(HttpStatus.OK)
+    public AdoptionDTO assignVeterinarian(@PathVariable Long id, @PathVariable Long veterinarianId)
+            throws EntityNotFoundException, IllegalOperationException {
+        return modelMapper.map(adoptionService.assignVeterinarian(id, veterinarianId), AdoptionDTO.class);
+    }
+
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) throws EntityNotFoundException, IllegalOperationException {

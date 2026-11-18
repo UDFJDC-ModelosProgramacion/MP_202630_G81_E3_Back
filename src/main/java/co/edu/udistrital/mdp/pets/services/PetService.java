@@ -95,12 +95,51 @@ public class PetService {
 
     @Transactional
     public List<PetEntity> getAvailablePetsByFilters(String activityLevel, String spaceRequirement) {
+        return getAvailablePetsByFilters(activityLevel, spaceRequirement, null, null, null, null, null, null);
+    }
+
+    /**
+     * Búsqueda avanzada de mascotas disponibles. Todos los filtros son opcionales: especie y tamaño
+     * sin distinguir mayúsculas, edad en un rango (años) y compatibilidad (solo restringe si es true).
+     */
+    @Transactional
+    public List<PetEntity> getAvailablePetsByFilters(String activityLevel, String spaceRequirement, String species,
+            Integer minAge, Integer maxAge, String size, Boolean compatibleWithChildren,
+            Boolean compatibleWithOtherPets) {
         log.info("Inicia proceso de búsqueda avanzada de mascotas disponibles");
         List<PetEntity> pets = petRepository.findByStatus("AVAILABLE");
         return pets.stream()
                 .filter(p -> activityLevel == null || activityLevel.equals(p.getActivityLevel()))
                 .filter(p -> spaceRequirement == null || spaceRequirement.equals(p.getSpaceRequirement()))
+                .filter(p -> isBlank(species) || species.trim().equalsIgnoreCase(p.getSpecies()))
+                .filter(p -> isBlank(size) || size.trim().equalsIgnoreCase(p.getSize()))
+                .filter(p -> minAge == null || (p.getAge() != null && p.getAge() >= minAge))
+                .filter(p -> maxAge == null || (p.getAge() != null && p.getAge() <= maxAge))
+                .filter(p -> !Boolean.TRUE.equals(compatibleWithChildren)
+                        || Boolean.TRUE.equals(p.getCompatibleWithChildren()))
+                .filter(p -> !Boolean.TRUE.equals(compatibleWithOtherPets)
+                        || Boolean.TRUE.equals(p.getCompatibleWithOtherPets()))
                 .toList();
+    }
+
+    /** Agrega una foto (enlace http/https de hasta 255 caracteres) al perfil de la mascota. */
+    @Transactional
+    public PetEntity addPhoto(Long petId, String url) throws EntityNotFoundException, IllegalOperationException {
+        log.info("Inicia proceso de agregar una foto a la mascota con id = {0}", petId);
+        if (url == null || url.isBlank())
+            throw new IllegalOperationException("Photo url is not valid");
+        String photo = url.trim();
+        if (!(photo.startsWith("http://") || photo.startsWith("https://")))
+            throw new IllegalOperationException("Photo url must start with http:// or https://");
+        if (photo.length() > 255)
+            throw new IllegalOperationException("Photo url cannot exceed 255 characters");
+        PetEntity pet = getPet(petId);
+        pet.getPhotos().add(photo);
+        return petRepository.save(pet);
+    }
+
+    private static boolean isBlank(String value) {
+        return value == null || value.isBlank();
     }
 
     @Transactional
@@ -135,6 +174,7 @@ public class PetService {
         pet.setId(petId);
         pet.setEvents(existing.getEvents());
         pet.setBreed(existing.getBreed());
+        pet.setVaccinations(existing.getVaccinations());
 
         log.info("Termina proceso de actualizar la mascota con id = {0}", petId);
         return petRepository.save(pet);

@@ -11,6 +11,8 @@ public interface PetEventRepository extends JpaRepository<PetEventEntity, Long> 
 
     List<PetEventEntity> findByPetIdOrderByDateAsc(Long petId);
 
+    List<PetEventEntity> findByPetShelterId(Long shelterId);
+
     List<PetEventEntity> findByPetIdAndEventType(Long petId, String eventType);
 
     List<PetEventEntity> findByEventTypeAndDateBetween(String eventType, Date start, Date end);

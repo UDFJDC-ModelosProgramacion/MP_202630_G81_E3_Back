@@ -16,7 +16,10 @@ import uk.co.jemos.podam.common.PodamExclude;
 @Entity
 public class EventCalendarEntity extends BaseEntity {
 
+    /** FAIR (feria de adopción), WORKSHOP (taller) o VACCINATION_CAMPAIGN (jornada de vacunación). */
     private String type;
+    private String title;
+    private String description;
     private Date date;
 
     @PodamExclude

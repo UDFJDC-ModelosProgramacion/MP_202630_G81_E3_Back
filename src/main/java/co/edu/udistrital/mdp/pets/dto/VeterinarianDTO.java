@@ -8,4 +8,7 @@ public class VeterinarianDTO {
     private Long id;
     private String name;
     private String speciality;
+    private String email;
+    private String phone;
+    private String availability;
 }

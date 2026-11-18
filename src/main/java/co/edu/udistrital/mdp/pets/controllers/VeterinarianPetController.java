@@ -19,6 +19,7 @@ import co.edu.udistrital.mdp.pets.entities.MedicalRecordEntity;
 import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
 import co.edu.udistrital.mdp.pets.exceptions.ForbiddenOperationException;
 import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
+import co.edu.udistrital.mdp.pets.services.AutoNotificationService;
 import co.edu.udistrital.mdp.pets.services.MedicalRecordService;
 
 /**
@@ -32,9 +33,13 @@ public class VeterinarianPetController {
     private final MedicalRecordService medicalRecordService;
     private final ModelMapper modelMapper;
 
-    public VeterinarianPetController(MedicalRecordService medicalRecordService, ModelMapper modelMapper) {
+    private final AutoNotificationService notificationService;
+
+    public VeterinarianPetController(MedicalRecordService medicalRecordService, ModelMapper modelMapper,
+            AutoNotificationService notificationService) {
         this.medicalRecordService = medicalRecordService;
         this.modelMapper = modelMapper;
+        this.notificationService = notificationService;
     }
 
     @GetMapping
@@ -61,6 +66,10 @@ public class VeterinarianPetController {
             throws EntityNotFoundException, ForbiddenOperationException, IllegalOperationException {
         MedicalRecordEntity created = medicalRecordService.createMedicalRecord(veterinarianId, petId,
                 modelMapper.map(dto, MedicalRecordEntity.class));
+        if (created.getPet() != null) {
+            notificationService.notifyShelter(created.getPet().getShelter(),
+                    "Nuevo evento médico de " + created.getPet().getName() + ": " + created.getReason());
+        }
         return modelMapper.map(created, MedicalRecordDTO.class);
     }
 }

@@ -7,5 +7,6 @@ public class ReviewDTO {
     private Long id;
     private String comments;
     private String score;
+    private Boolean successStory;
     private AdoptionDTO adoption;
 }

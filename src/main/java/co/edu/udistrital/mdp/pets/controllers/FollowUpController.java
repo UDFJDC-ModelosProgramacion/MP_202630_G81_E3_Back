@@ -19,6 +19,7 @@ import co.edu.udistrital.mdp.pets.entities.FollowUpEntity;
 import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
 import co.edu.udistrital.mdp.pets.exceptions.ForbiddenOperationException;
 import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
+import co.edu.udistrital.mdp.pets.services.AutoNotificationService;
 import co.edu.udistrital.mdp.pets.services.FollowUpService;
 
 /**
@@ -32,9 +33,13 @@ public class FollowUpController {
     private final FollowUpService followUpService;
     private final ModelMapper modelMapper;
 
-    public FollowUpController(FollowUpService followUpService, ModelMapper modelMapper) {
+    private final AutoNotificationService notificationService;
+
+    public FollowUpController(FollowUpService followUpService, ModelMapper modelMapper,
+            AutoNotificationService notificationService) {
         this.followUpService = followUpService;
         this.modelMapper = modelMapper;
+        this.notificationService = notificationService;
     }
 
     @PostMapping
@@ -44,6 +49,11 @@ public class FollowUpController {
             throws EntityNotFoundException, ForbiddenOperationException, IllegalOperationException {
         FollowUpEntity created = followUpService.createFollowUp(adoptionId, adopterId,
                 modelMapper.map(followUpDTO, FollowUpEntity.class));
+        if (created.getAdoption() != null && created.getAdoption().getPet() != null) {
+            notificationService.notifyShelter(created.getAdoption().getPet().getShelter(),
+                    "Nuevo seguimiento de " + created.getAdoption().getPet().getName() + ": "
+                            + created.getAdaptationStatus());
+        }
         return modelMapper.map(created, FollowUpDTO.class);
     }
 

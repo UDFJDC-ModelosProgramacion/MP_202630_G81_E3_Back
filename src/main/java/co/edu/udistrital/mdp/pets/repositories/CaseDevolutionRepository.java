@@ -5,5 +5,7 @@ import co.edu.udistrital.mdp.pets.entities.CaseDevolutionEntity;
  
 public interface CaseDevolutionRepository extends JpaRepository<CaseDevolutionEntity, Long> {
     Optional<CaseDevolutionEntity> findByAdoptionId(Long adoptionId);
+
+    java.util.List<CaseDevolutionEntity> findByAdoptionPetShelterId(Long shelterId);
 }
  

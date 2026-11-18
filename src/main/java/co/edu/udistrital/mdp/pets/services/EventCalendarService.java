@@ -79,6 +79,22 @@ public class EventCalendarService {
         return eventCalendarRepository.findAll();
     }
 
+    /** Eventos del calendario de un refugio, del más próximo al más lejano. */
+    @Transactional
+    public List<EventCalendarEntity> getEventCalendarsByShelter(Long shelterId) throws EntityNotFoundException {
+        Optional<ShelterEntity> shelter = shelterRepository.findById(shelterId);
+        if (shelter.isEmpty()) {
+            throw new EntityNotFoundException("Shelter not found");
+        }
+        return shelter.get().getEvents().stream()
+                .sorted((a, b) -> {
+                    if (a.getDate() == null || b.getDate() == null)
+                        return 0;
+                    return a.getDate().compareTo(b.getDate());
+                })
+                .toList();
+    }
+
     @Transactional
     public EventCalendarEntity getEventCalendar(Long eventCalendarId)
             throws EntityNotFoundException {

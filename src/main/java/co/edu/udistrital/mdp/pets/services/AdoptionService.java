@@ -3,15 +3,18 @@ package co.edu.udistrital.mdp.pets.services;
 import co.edu.udistrital.mdp.pets.entities.AdopterEntity;
 import co.edu.udistrital.mdp.pets.entities.AdoptionEntity;
 import co.edu.udistrital.mdp.pets.entities.PetEntity;
+import co.edu.udistrital.mdp.pets.entities.VeterinarianEntity;
 import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
 import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
 import co.edu.udistrital.mdp.pets.repositories.AdopterRepository;
 import co.edu.udistrital.mdp.pets.repositories.AdoptionRepository;
 import co.edu.udistrital.mdp.pets.repositories.PetRepository;
+import co.edu.udistrital.mdp.pets.repositories.VeterinarianRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +22,11 @@ public class AdoptionService {
     private final AdoptionRepository adoptionRepository;
     private final PetRepository petRepository;
     private final AdopterRepository adopterRepository;
+    private final VeterinarianRepository veterinarianRepository;
+
+    /** Estados válidos de una adopción: solicitud, aprobación, convivencia, cierre y devolución. */
+    public static final Set<String> STATUSES = Set.of("PENDING", "APPROVED", "REJECTED", "ACTIVE",
+            "IN_PROGRESS", "COHABITATION", "COMPLETED", "RETURNED", "CANCELLED");
 
     @Transactional
     public AdoptionEntity createAdoption(AdoptionEntity adoption) throws IllegalOperationException, EntityNotFoundException {
@@ -39,8 +47,12 @@ public class AdoptionService {
                 .orElseThrow(() -> new EntityNotFoundException("Adoptante no encontrado"));
         PetEntity pet = petRepository.findById(adoption.getPet().getId())
                 .orElseThrow(() -> new EntityNotFoundException("Mascota no encontrada"));
+        if (!"AVAILABLE".equals(pet.getStatus())) {
+            throw new IllegalOperationException("La mascota no está disponible para adopción.");
+        }
         adoption.setAdopter(adopter);
         adoption.setPet(pet);
+        adoption.setVeterinarian(null);
         adoption.setContract(null);
         if (adoption.getStatus() == null || adoption.getStatus().isBlank()) {
             adoption.setStatus("PENDING");
@@ -65,9 +77,47 @@ public class AdoptionService {
         if (adoption.getAdoptionDate() == null) {
             throw new IllegalOperationException("La fecha de adopción no puede ser nula.");
         }
+        if (adoption.getStatus() == null || !STATUSES.contains(adoption.getStatus())) {
+            throw new IllegalOperationException("El estado de la adopción no es válido.");
+        }
         existing.setAdoptionDate(adoption.getAdoptionDate());
         existing.setStatus(adoption.getStatus());
+        syncPetStatus(existing);
         return adoptionRepository.save(existing);
+    }
+
+    /**
+     * Asigna al veterinario responsable del seguimiento posadopción. Debe trabajar en el refugio
+     * de la mascota adoptada.
+     */
+    @Transactional
+    public AdoptionEntity assignVeterinarian(Long adoptionId, Long veterinarianId)
+            throws EntityNotFoundException, IllegalOperationException {
+        AdoptionEntity adoption = this.getAdoption(adoptionId);
+        VeterinarianEntity veterinarian = veterinarianRepository.findById(veterinarianId)
+                .orElseThrow(() -> new EntityNotFoundException("Veterinario no encontrado"));
+        boolean sameShelter = veterinarian.getShelter() != null && adoption.getPet() != null
+                && adoption.getPet().getShelter() != null
+                && veterinarian.getShelter().getId().equals(adoption.getPet().getShelter().getId());
+        if (!sameShelter) {
+            throw new IllegalOperationException("El veterinario no trabaja en el refugio de la mascota.");
+        }
+        adoption.setVeterinarian(veterinarian);
+        return adoptionRepository.save(adoption);
+    }
+
+    /** Mantiene el estado de la mascota coherente con el de su adopción. */
+    private void syncPetStatus(AdoptionEntity adoption) {
+        PetEntity pet = adoption.getPet();
+        if (pet == null) {
+            return;
+        }
+        switch (adoption.getStatus()) {
+            case "APPROVED", "ACTIVE", "IN_PROGRESS", "COHABITATION" -> pet.setStatus("IN_PROCESS");
+            case "COMPLETED" -> pet.setStatus("ADOPTED");
+            case "REJECTED", "RETURNED", "CANCELLED" -> pet.setStatus("AVAILABLE");
+            default -> { }
+        }
     }
 
     @Transactional

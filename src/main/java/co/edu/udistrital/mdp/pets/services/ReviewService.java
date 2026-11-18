@@ -46,6 +46,15 @@ public class ReviewService {
         return reviewRepository.save(reviewEntity);
     }
 
+    /** Reseñas de todos los adoptantes; con `successStory` solo las que cuentan una adopción exitosa. */
+    @Transactional
+    public List<ReviewEntity> getAllReviews(Boolean successStory) {
+        log.info("Inicia proceso de consultar todas las reseñas");
+        return reviewRepository.findAll().stream()
+                .filter(r -> successStory == null || successStory.equals(Boolean.TRUE.equals(r.getSuccessStory())))
+                .toList();
+    }
+
     @Transactional
     public List<ReviewEntity> getReviews(Long adoptionId) throws EntityNotFoundException {
         log.info("Inicia proceso de consultar los reviews de la adopción con id = {0}", adoptionId);

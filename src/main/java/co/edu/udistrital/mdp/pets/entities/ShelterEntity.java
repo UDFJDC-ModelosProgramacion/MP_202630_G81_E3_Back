@@ -2,6 +2,7 @@ package co.edu.udistrital.mdp.pets.entities;
 import java.util.ArrayList;
 import java.util.List;
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
@@ -18,6 +19,13 @@ public class ShelterEntity extends BaseEntity {
 
     private String name;
     private String city;
+
+    /** Enlaces a fotos y videos de las instalaciones. */
+    @ElementCollection
+    private List<String> photos = new ArrayList<>();
+
+    @ElementCollection
+    private List<String> videos = new ArrayList<>();
 
     @PodamExclude
     @OneToMany(mappedBy = "shelter", cascade = CascadeType.ALL)

@@ -9,6 +9,7 @@ public class PetDTO {
 
     private Long id;
     private String name;
+    private String species;
     private String status;
     private Integer age;
     private String sex;
