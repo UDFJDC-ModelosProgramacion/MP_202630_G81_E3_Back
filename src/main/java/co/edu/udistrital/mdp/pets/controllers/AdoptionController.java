@@ -21,10 +21,7 @@ import java.util.List;
 @RequestMapping("/adoptions")
 public class AdoptionController {
 
-    @Autowired
     private AdoptionService adoptionService;
-
-    @Autowired
     private ModelMapper modelMapper;
 
     @Autowired
@@ -68,14 +65,6 @@ public class AdoptionController {
         AdoptionEntity entity = modelMapper.map(dto, AdoptionEntity.class);
         AdoptionEntity updatedEntity = adoptionService.updateAdoption(id, entity);
         return modelMapper.map(updatedEntity, AdoptionDTO.class);
-    }
-
-    /** Asigna al veterinario responsable del seguimiento posadopción. */
-    @PutMapping("/{id}/veterinarian/{veterinarianId}")
-    @ResponseStatus(HttpStatus.OK)
-    public AdoptionDTO assignVeterinarian(@PathVariable Long id, @PathVariable Long veterinarianId)
-            throws EntityNotFoundException, IllegalOperationException {
-        return modelMapper.map(adoptionService.assignVeterinarian(id, veterinarianId), AdoptionDTO.class);
     }
 
     @DeleteMapping("/{id}")

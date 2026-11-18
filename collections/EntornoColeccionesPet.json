@@ -1,0 +1,73 @@
+{
+  "id": "mp-g81-e3-local-env",
+  "name": "MP_G81_E3_Local",
+  "values": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "pet_id_1",
+      "value": "1",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "pet_id_no_breed",
+      "value": "2",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "pet_id_active_adoption",
+      "value": "2",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "pet_id_adopted",
+      "value": "3",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "shelter_id_1",
+      "value": "1",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "shelter_id_2",
+      "value": "2",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "event_id_1",
+      "value": "3",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "event_id_arrival",
+      "value": "1",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "event_id_past_vaccination",
+      "value": "2",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "event_id_other_pet",
+      "value": "4",
+      "type": "default",
+      "enabled": true
+    }
+  ],
+  "_postman_variable_scope": "environment"
+}

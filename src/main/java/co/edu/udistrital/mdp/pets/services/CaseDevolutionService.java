@@ -1,26 +1,33 @@
 package co.edu.udistrital.mdp.pets.services;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import co.edu.udistrital.mdp.pets.entities.AdoptionEntity;
 import co.edu.udistrital.mdp.pets.entities.CaseDevolutionEntity;
+import co.edu.udistrital.mdp.pets.entities.PetEntity;
 import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
 import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
 import co.edu.udistrital.mdp.pets.repositories.AdoptionRepository;
 import co.edu.udistrital.mdp.pets.repositories.CaseDevolutionRepository;
+import co.edu.udistrital.mdp.pets.repositories.PetRepository;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
 public class CaseDevolutionService {
 
+    public static final String AVAILABLE_PET_STATUS = "AVAILABLE";
+
     private CaseDevolutionRepository caseDevolutionRepository;
     private AdoptionRepository adoptionRepository;
+    private PetRepository petRepository;
 
     public CaseDevolutionService(CaseDevolutionRepository caseDevolutionRepository,
-             AdoptionRepository adoptionRepository) {
+            AdoptionRepository adoptionRepository, PetRepository petRepository) {
         this.caseDevolutionRepository = caseDevolutionRepository;
         this.adoptionRepository = adoptionRepository;
+        this.petRepository = petRepository;
     }
 
     @Transactional
@@ -43,6 +50,7 @@ public class CaseDevolutionService {
             throw new IllegalOperationException("La fecha de la devolución no puede ser anterior a la fecha de la adopción");
 
         caseDevolutionEntity.setAdoption(adoption);
+        makePetAvailable(adoption.getPet());
 
         // La mascota vuelve a estar disponible y su historial conserva la adopción devuelta.
         adoption.setStatus("RETURNED");
@@ -51,6 +59,12 @@ public class CaseDevolutionService {
 
         log.info("Termina proceso de creación de la devolución para la adopción con id = {0}", adoptionId);
         return caseDevolutionRepository.save(caseDevolutionEntity);
+    }
+
+    @Transactional
+    public List<CaseDevolutionEntity> getCaseDevolutions() {
+        log.info("Inicia proceso de consultar todas las devoluciones");
+        return caseDevolutionRepository.findAll();
     }
 
     @Transactional
@@ -93,6 +107,14 @@ public class CaseDevolutionService {
 
         caseDevolutionRepository.deleteById(existing.getId());
         log.info("Termina proceso de borrar la devolución de la adopción con id = {0}", adoptionId);
+    }
+
+    /** La mascota devuelta vuelve al refugio y puede ser adoptada de nuevo. */
+    private void makePetAvailable(PetEntity pet) {
+        if (pet == null)
+            return;
+        pet.setStatus(AVAILABLE_PET_STATUS);
+        petRepository.save(pet);
     }
 
     private AdoptionEntity findAdoptionOrThrow(Long adoptionId) throws EntityNotFoundException {
