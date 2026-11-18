@@ -137,6 +137,39 @@ class CaseDevolutionServiceTest {
     }
 
     @Test
+    void testCreateCaseDevolutionMakesPetAvailable() throws EntityNotFoundException, IllegalOperationException {
+        PetEntity pet = adoptionList.get(1).getPet();
+        pet.setStatus("ADOPTED");
+
+        caseDevolutionService.createCaseDevolution(adoptionList.get(1).getId(), buildDevolution());
+
+        PetEntity stored = entityManager.find(PetEntity.class, pet.getId());
+        assertEquals("AVAILABLE", stored.getStatus());
+    }
+
+    @Test
+    void testCreateInvalidCaseDevolutionKeepsPetStatus() {
+        PetEntity pet = adoptionList.get(1).getPet();
+        pet.setStatus("ADOPTED");
+
+        assertThrows(IllegalOperationException.class, () -> {
+            CaseDevolutionEntity newEntity = buildDevolution();
+            newEntity.setReason(null);
+            caseDevolutionService.createCaseDevolution(adoptionList.get(1).getId(), newEntity);
+        });
+
+        assertEquals("ADOPTED", entityManager.find(PetEntity.class, pet.getId()).getStatus());
+    }
+
+    @Test
+    void testGetCaseDevolutions() {
+        List<CaseDevolutionEntity> result = caseDevolutionService.getCaseDevolutions();
+
+        assertEquals(1, result.size());
+        assertEquals(existingDevolution.getId(), result.get(0).getId());
+    } 
+
+    @Test
     void testCreateCaseDevolutionWithInvalidAdoption() {
         assertThrows(EntityNotFoundException.class, () -> {
             CaseDevolutionEntity newEntity = buildDevolution();

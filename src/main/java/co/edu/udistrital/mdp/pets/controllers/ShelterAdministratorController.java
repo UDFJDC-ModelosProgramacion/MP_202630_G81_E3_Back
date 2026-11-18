@@ -9,14 +9,12 @@ import org.springframework.web.bind.annotation.*;
 
 import co.edu.udistrital.mdp.pets.dto.ShelterAdministratorDTO;
 import co.edu.udistrital.mdp.pets.dto.ShelterAdministratorDetailDTO;
-import co.edu.udistrital.mdp.pets.dto.ShelterDTO;
-import co.edu.udistrital.mdp.pets.dto.ShelterDetailDTO;
 import co.edu.udistrital.mdp.pets.entities.ShelterAdministratorEntity;
 import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
 import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
 import co.edu.udistrital.mdp.pets.services.ShelterAdministratorService;
 
-/** Administradores de refugios y los refugios que administran. */
+/** Administradores de refugios. */
 @RestController
 @RequestMapping("/administrators")
 public class ShelterAdministratorController {
@@ -66,36 +64,5 @@ public class ShelterAdministratorController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) throws EntityNotFoundException, IllegalOperationException {
         administratorService.deleteAdministrator(id);
-    }
-
-    /** Asocia el administrador con el refugio. */
-    @PostMapping("/{administratorId}/shelters/{shelterId}")
-    @ResponseStatus(HttpStatus.OK)
-    public ShelterDTO addShelter(@PathVariable Long administratorId, @PathVariable Long shelterId)
-            throws EntityNotFoundException, IllegalOperationException {
-        return modelMapper.map(administratorService.addShelter(administratorId, shelterId), ShelterDTO.class);
-    }
-
-    @GetMapping("/{administratorId}/shelters")
-    @ResponseStatus(HttpStatus.OK)
-    public List<ShelterDTO> findShelters(@PathVariable Long administratorId) throws EntityNotFoundException {
-        return modelMapper.map(administratorService.getShelters(administratorId),
-                new TypeToken<List<ShelterDTO>>() {
-                }.getType());
-    }
-
-    @GetMapping("/{administratorId}/shelters/{shelterId}")
-    @ResponseStatus(HttpStatus.OK)
-    public ShelterDetailDTO findShelter(@PathVariable Long administratorId, @PathVariable Long shelterId)
-            throws EntityNotFoundException, IllegalOperationException {
-        return modelMapper.map(administratorService.getShelter(administratorId, shelterId),
-                ShelterDetailDTO.class);
-    }
-
-    @DeleteMapping("/{administratorId}/shelters/{shelterId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void removeShelter(@PathVariable Long administratorId, @PathVariable Long shelterId)
-            throws EntityNotFoundException, IllegalOperationException {
-        administratorService.removeShelter(administratorId, shelterId);
     }
 }
