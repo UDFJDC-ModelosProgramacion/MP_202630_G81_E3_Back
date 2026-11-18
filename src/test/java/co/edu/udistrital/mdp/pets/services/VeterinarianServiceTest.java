@@ -6,6 +6,9 @@ import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
@@ -46,6 +49,8 @@ class VeterinarianServiceTest {
         veterinarian = new VeterinarianEntity();
         veterinarian.setName("Carlos Pérez");
         veterinarian.setSpeciality("Cirugía");
+        veterinarian.setAge(35);
+        veterinarian.setGender("MALE");
         veterinarian.setShelter(shelter);
     }
 
@@ -57,6 +62,8 @@ class VeterinarianServiceTest {
         assertNotNull(result.getId());
         assertEquals("Carlos Pérez", result.getName());
         assertEquals("Cirugía", result.getSpeciality());
+        assertEquals(35, result.getAge());
+        assertEquals("MALE", result.getGender());
         assertEquals(shelter.getId(), result.getShelter().getId());
     }
 
@@ -103,6 +110,68 @@ class VeterinarianServiceTest {
         );
     }
 
+    @ParameterizedTest
+    @ValueSource(ints = {-1, 0, 17, 101})
+    void createVeterinarianWithInvalidAgeTest(int age) {
+        veterinarian.setAge(age);
+
+        assertThrows(
+                IllegalOperationException.class,
+                () -> veterinarianService.createVeterinarian(veterinarian)
+        );
+    }
+
+    @Test
+    void createVeterinarianWithoutAgeTest() {
+        veterinarian.setAge(null);
+
+        assertThrows(
+                IllegalOperationException.class,
+                () -> veterinarianService.createVeterinarian(veterinarian)
+        );
+    }
+
+    @ParameterizedTest
+    @NullAndEmptySource
+    @ValueSource(strings = {"female", "OTRO"})
+    void createVeterinarianWithInvalidGenderTest(String gender) {
+        veterinarian.setGender(gender);
+
+        assertThrows(
+                IllegalOperationException.class,
+                () -> veterinarianService.createVeterinarian(veterinarian)
+        );
+    }
+
+    @Test
+    void updateVeterinarianWithInvalidPersonalDataTest() throws Exception {
+        VeterinarianEntity saved =
+                veterinarianService.createVeterinarian(veterinarian);
+
+        veterinarian.setAge(10);
+        assertThrows(
+                IllegalOperationException.class,
+                () -> veterinarianService.updateVeterinarian(
+                        saved.getId(), veterinarian)
+        );
+
+        veterinarian.setAge(35);
+        veterinarian.setGender("X");
+        assertThrows(
+                IllegalOperationException.class,
+                () -> veterinarianService.updateVeterinarian(
+                        saved.getId(), veterinarian)
+        );
+    }
+
+    @Test
+    void newVeterinarianIsAvailableTest() throws Exception {
+        VeterinarianEntity saved =
+                veterinarianService.createVeterinarian(veterinarian);
+
+        assertTrue(saved.isAvailable());
+    }
+
     @Test
     void getVeterinariansTest() throws Exception {
         veterinarianService.createVeterinarian(veterinarian);
@@ -142,6 +211,8 @@ class VeterinarianServiceTest {
         VeterinarianEntity update = new VeterinarianEntity();
         update.setName("Ana Gómez");
         update.setSpeciality("Dermatología");
+        update.setAge(41);
+        update.setGender("FEMALE");
         update.setShelter(shelter);
 
         VeterinarianEntity result =
@@ -151,6 +222,8 @@ class VeterinarianServiceTest {
         assertEquals(saved.getId(), result.getId());
         assertEquals("Ana Gómez", result.getName());
         assertEquals("Dermatología", result.getSpeciality());
+        assertEquals(41, result.getAge());
+        assertEquals("FEMALE", result.getGender());
         assertEquals(shelter.getId(), result.getShelter().getId());
     }
 

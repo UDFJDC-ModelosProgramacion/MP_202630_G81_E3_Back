@@ -32,6 +32,20 @@ public class VeterinarianService {
         this.shelterRepository = shelterRepository;
     }
 
+    public static final int MIN_AGE = 18;
+    public static final int MAX_AGE = 100;
+    public static final List<String> GENDERS = List.of("FEMALE", "MALE", "OTHER");
+
+    private void validatePersonalData(VeterinarianEntity veterinarian) throws IllegalOperationException {
+        Integer age = veterinarian.getAge();
+        if (age == null || age < MIN_AGE || age > MAX_AGE) {
+            throw new IllegalOperationException("Veterinarian age is not valid");
+        }
+        if (veterinarian.getGender() == null || !GENDERS.contains(veterinarian.getGender())) {
+            throw new IllegalOperationException("Veterinarian gender is not valid");
+        }
+    }
+
     @Transactional
     public VeterinarianEntity createVeterinarian(
             VeterinarianEntity veterinarian)
@@ -50,6 +64,8 @@ public class VeterinarianService {
             throw new IllegalOperationException(
                     "Veterinarian speciality is not valid");
         }
+
+        validatePersonalData(veterinarian);
 
         if (veterinarian.getShelter() == null) {
             throw new IllegalOperationException(
@@ -128,6 +144,8 @@ public class VeterinarianService {
             throw new IllegalOperationException(
                     "Veterinarian speciality is not valid");
         }
+
+        validatePersonalData(veterinarian);
 
         if (veterinarian.getShelter() == null) {
             throw new IllegalOperationException(

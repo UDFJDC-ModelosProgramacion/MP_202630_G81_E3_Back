@@ -11,4 +11,5 @@ public class AdoptionDTO {
     private String status;
     private PetDTO pet;
     private AdopterDTO adopter;
+    private VeterinarianDTO veterinarian;
 }
